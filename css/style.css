@@ -379,6 +379,11 @@ a.nav-link {
 #section2 h6 {
 	padding:15px;
 }
+
+#section2 img {
+  float: right;
+  margin-left: 10px;
+}
 .toolbox-header {
 	font-weight: 500;
 	margin-top: 5px;
