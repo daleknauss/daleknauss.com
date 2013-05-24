@@ -405,6 +405,10 @@ a.nav-link {
 	color: #F1F1F1;
 }
 
+#section3 .content {
+  margin-top: 25px;
+}
+
 #section3 h2 {
 	margin-left: -5px;
 }
