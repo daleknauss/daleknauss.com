@@ -24,33 +24,7 @@ $(document).ready(function ($) {
 		section.toggle();
 	    section.siblings(".slide").slideToggle('2000', "easeInQuart");
 	});
-	
-	$('#section4 .article-tags li').on('click', function () {
-	    
-	    var section = $(this).parents('.span4');
-	    var category = $(this).attr('data-blog');
-	    var articles = section.siblings();
-	    
-	    // Change Tab BG's
-	    $(this).siblings('.current').removeClass('current');
-	    $(this).addClass('current');
-		
-		// Hide/Show other articles
-	    section.siblings('.current').removeClass('current').hide();
-	    
-    	$(articles).each(function (index) {
-	    	
-	    	var newCategory = $(this).attr('data-blog');
-	    	
-	    	if ( newCategory == category ) {
-		    	$(this).slideDown('1000', "easeInQuart").addClass('current');
-	    	}
-	    });
-
-	});
-	
-	
-		
+  
 	// Waypoints Scrolling
 	
 	var links = $('.navigation').find('li');
@@ -114,36 +88,6 @@ $(document).ready(function ($) {
         var datasection = $(this).attr('data-section');
         goToByScroll(datasection);
     });
-  
-    // Snap to scroll (optional)
-    
-    /*
-
-    section.waypoint(function (direction) {
-
-        var nextpos = $(this).attr('data-section');
-        var prevpos = $(this).prev().attr('data-section');
-
-        if (nextpos != 1) {
-	        if (direction === 'down') {
-	            htmlbody.animate({
-		            scrollTop: $('.section[data-section="' + nextpos + '"]').offset().top
-		        }, 750, 'easeOutQuad');
-	        }
-	        else {
-	            htmlbody.animate({
-		            scrollTop: $('.section[data-section="' + prevpos + '"]').offset().top
-		        }, 750, 'easeOutQuad');
-	        }
-        }
-        
-
-    }, { offset: '60%' });	
-    
-    */
-   
-       
-    
     
     // Redirect external links
 	
