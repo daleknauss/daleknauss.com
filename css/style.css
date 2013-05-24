@@ -434,6 +434,10 @@ a.nav-link {
 
 /* Section 4 */
 
+#resume .content {
+  margin-top: 25px;
+}
+
 /*
 #section4  h2 {
 	margin-left: -4px;
