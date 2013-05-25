@@ -429,7 +429,9 @@ a.nav-link {
 	background-color: #F1F1F1;
 }
 
-
+#projects button {
+  margin-left: 40%;
+}
 
 
 /* Section 4 */
@@ -438,8 +440,8 @@ a.nav-link {
   margin-top: 25px;
 }
 
-#resume iframe {
-  padding-left: 200px;
+#resume button {
+  margin-left: 20%;
 }
 /*
 #section4  h2 {
