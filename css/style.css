@@ -330,7 +330,17 @@ a.nav-link {
 .table-hover tbody tr:hover th {
 	background-color: rgba(75, 75, 75, 0.4);
 }
+.callout {
+	font-weight: bold;
+}
 
+.header {
+	border: 1px solid black;
+	background: black;
+	opacity: .7;
+	padding: 4px;
+	padding-left: 44px;
+}
 
 /* Section 1 */ 
 
