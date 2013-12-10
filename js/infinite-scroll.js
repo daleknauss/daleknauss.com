@@ -247,6 +247,8 @@ var TableScroller = function (cols, rows) {
 
         var offsetHeight = (page - 1) * self.pageSize * self.rowHeight;
         DOM.table.style.top = offsetHeight + 'px';
+        console.log("adjustForPage - end")
+
         // this.logger('adjust top: ' + DOM.table.style.top);
     };
 
@@ -262,6 +264,7 @@ var TableScroller = function (cols, rows) {
 
         //Detect if a page has 'jumped' from a continued scrolling range                     
         if (pageJumped) {
+            console.log("detectBigScroll - pageJumped")
             // this.logger('Page out of range! Readjusting: ' + scrollY + ' > ' + (self.currentPage * pageHeight));
             self.currentPage = Math.floor(scrollY / (self.pageSize * self.rowHeight)) + 1;
             self.adjustForPage(self.currentPage);
