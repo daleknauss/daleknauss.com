@@ -10,6 +10,8 @@ var TableScroller = function (cols, rows) {
     this.previousTop = 0;
     this.rowCount = this.rows.length;
     this.colCount = this.columns.length;
+    this.waitingToScroll = false;
+    this.scrollTimeout = null;
     
     //private variables
     var self = this,
@@ -41,29 +43,41 @@ var TableScroller = function (cols, rows) {
         DOM.scrollY.style.height = (this.rows.length * rowHeight) + 'px';
 
         //initialize events
-        DOM.tableWrapper.addEventListener(events.onStart, function (e) {
-            //todo;put in multitouch check
-            if (this.isStarted) {
-                e.preventDefault();
-                return;
-            }
-            this.isStarted = true;
-            // this.startTime = new Date();
-            // this.logger('start:' + this.startTime.getMilliseconds() + ',' + this.isStarted);
-        });
-        DOM.tableWrapper.addEventListener(events.onEnd, function (e) {
-            //todo;put in multitouch check
-            self.scroll(e);
-            this.isStarted = false;
-        });
+        // DOM.tableWrapper.addEventListener(events.onStart, function (e) {
+        //     //todo;put in multitouch check
+        //     if (this.isStarted) {
+        //         e.preventDefault();
+        //         return;
+        //     }
+        //     this.isStarted = true;
+        //     // this.startTime = new Date();
+        //     // this.logger('start:' + this.startTime.getMilliseconds() + ',' + this.isStarted);
+        // });
+        // DOM.tableWrapper.addEventListener(events.onEnd, function (e) {
+        //     //todo;put in multitouch check
+        //     self.scroll(e);
+        //     this.isStarted = false;
+        // });
 
         DOM.tableWrapper.removeEventListener('scroll');
         DOM.tableWrapper.addEventListener('scroll', function (e) {
-            if (isTouchDevice) {
-                this.detectOffset();
-            } else { //desktop
-                self.scroll(e);
+            // if (isTouchDevice) {
+            //     this.detectOffset();
+            // } else { //desktop
+            var startScroll = function (e) {
+                self.scrollTimeout = setTimeout(function () {
+                    self.scroll(e);
+                    self.waitingToScroll = false;
+                }, 200)
+            };
+
+            if (self.waitingToScroll) {
+                clearTimeout(self.scrollTimeout);
+                startScroll(e);
+            } else {
+                startScroll(e);
             }
+            // }
         });
     }
 
