@@ -59,8 +59,8 @@ var TableScroller = function (cols, rows) {
         //     this.isStarted = false;
         // });
 
-        DOM.tableWrapper.removeEventListener('scroll');
-        DOM.tableWrapper.addEventListener('scroll', function (e) {
+        DOM.tableWrapper.removeEventListener(events.onEnd);
+        DOM.tableWrapper.addEventListener(events.onEnd, function (e) {
             // if (isTouchDevice) {
             //     this.detectOffset();
             // } else { //desktop
