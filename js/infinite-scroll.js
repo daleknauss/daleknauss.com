@@ -59,11 +59,11 @@ var TableScroller = function (cols, rows) {
 
         DOM.tableWrapper.removeEventListener('scroll');
         DOM.tableWrapper.addEventListener('scroll', function (e) {
-            if (isTouchDevice) {
-                this.detectOffset();
-            } else { //desktop
+            // if (isTouchDevice) {
+            //     this.detectOffset();
+            // } else { //desktop
                 self.scroll(e);
-            }
+            // }
         });
     }
 
