@@ -64,20 +64,21 @@ var TableScroller = function (cols, rows) {
             // if (isTouchDevice) {
             //     this.detectOffset();
             // } else { //desktop
-            var startScroll = function (e) {
-                self.scrollTimeout = setTimeout(function () {
-                    self.scroll(e);
-                    self.waitingToScroll = false;
-                }, 300)
-            };
+            // var startScroll = function (e) {
+            //     self.scrollTimeout = setTimeout(function () {
+            //         self.scroll(e);
+            //         self.waitingToScroll = false;
+            //     }, 300)
+            // };
 
-            if (self.waitingToScroll) {
-                clearTimeout(self.scrollTimeout);
-                startScroll(e);
-            } else {
-                startScroll(e);
-                self.waitingToScroll = true;
-            }
+            // if (self.waitingToScroll) {
+            //     clearTimeout(self.scrollTimeout);
+            //     startScroll(e);
+            // } else {
+            //     startScroll(e);
+            //     self.waitingToScroll = true;
+            // }
+            this.scroll(e);
             // }
         });
     }
