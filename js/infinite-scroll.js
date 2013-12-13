@@ -94,7 +94,7 @@ var TableScroller = function (cols, rows) {
 
         self.currentPage = Math.abs(Math.floor(scrollTop / this.getPageHeight())) + 1;
 
-        self.detectBigScroll(scrollTop);
+        // self.detectBigScroll(scrollTop);
 
         if (downScroll) {
             if (this.pageNotInBuffer(self.currentPage + 1)) self.append();
