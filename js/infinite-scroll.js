@@ -60,26 +60,26 @@ var TableScroller = function (cols, rows) {
         // });
 
         DOM.tableWrapper.removeEventListener(events.onEnd);
-        DOM.tableWrapper.addEventListener(events.onEnd, function (e) {
-            // if (isTouchDevice) {
-            //     this.detectOffset();
-            // } else { //desktop
-            var startScroll = function (e) {
-                self.scrollTimeout = setTimeout(function () {
-                    self.scroll(e);
-                    self.waitingToScroll = false;
-                }, 300)
-            };
+        // DOM.tableWrapper.addEventListener(events.onEnd, function (e) {
+        //     // if (isTouchDevice) {
+        //     //     this.detectOffset();
+        //     // } else { //desktop
+        //     var startScroll = function (e) {
+        //         self.scrollTimeout = setTimeout(function () {
+        //             self.scroll(e);
+        //             self.waitingToScroll = false;
+        //         }, 300)
+        //     };
 
-            if (self.waitingToScroll) {
-                clearTimeout(self.scrollTimeout);
-                startScroll(e);
-            } else {
-                startScroll(e);
-                self.waitingToScroll = true;
-            }
-            // }
-        });
+        //     if (self.waitingToScroll) {
+        //         clearTimeout(self.scrollTimeout);
+        //         startScroll(e);
+        //     } else {
+        //         startScroll(e);
+        //         self.waitingToScroll = true;
+        //     }
+        //     // }
+        // });
     }
 
     this.scroll = function (e) {
