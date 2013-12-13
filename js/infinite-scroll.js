@@ -10,10 +10,13 @@ var TableScroller = function (cols, rows) {
     this.previousTop = 0;
     this.rowCount = this.rows.length;
     this.colCount = this.columns.length;
+    this.waitingToScroll = false;
+    this.scrollTimeout = null;
     
     //private variables
     var self = this,
         DEFAULT_ROW_HEIGHT = 42,
+        WAITING_TIME = 200, // milliseconds
         DOM = {};
 
     this.init = function () {
@@ -27,6 +30,7 @@ var TableScroller = function (cols, rows) {
         this.pageCount = Math.ceil(this.rowCount / this.pageSize);
         var rowHeight = this.getRowHeight();
 
+        // Adds all rows to a pageBuffer
         for (var i = 0; i < this.pageCount; i++) {
             this.pageBuffer[i] = this.rows.slice(i * this.pageSize, (i + 1) * this.pageSize);
         }
@@ -40,29 +44,24 @@ var TableScroller = function (cols, rows) {
         //set virtual scroll area
         DOM.scrollY.style.height = (this.rows.length * rowHeight) + 'px';
 
-        //initialize events
-        DOM.tableWrapper.addEventListener(events.onStart, function (e) {
-            //todo;put in multitouch check
-            if (this.isStarted) {
-                e.preventDefault();
-                return;
-            }
-            this.isStarted = true;
-            // this.startTime = new Date();
-            // this.logger('start:' + this.startTime.getMilliseconds() + ',' + this.isStarted);
-        });
+        DOM.tableWrapper.removeEventListener(events.onEnd);
         DOM.tableWrapper.addEventListener(events.onEnd, function (e) {
-            //todo;put in multitouch check
-            self.scroll(e);
-            this.isStarted = false;
-        });
 
-        DOM.tableWrapper.removeEventListener('scroll');
-        DOM.tableWrapper.addEventListener('scroll', function (e) {
-            // if (isTouchDevice) {
-            //     this.detectOffset();
-            // } else { //desktop
-                self.scroll(e);
+            // var startScroll = function (e) {
+            //     self.scrollTimeout = setTimeout(function () {
+            //         self.scroll(e);
+            //         self.waitingToScroll = false;
+            //     }, WAITING_TIME)
+            // };
+
+            // if (self.waitingToScroll) {
+            //     clearTimeout(self.scrollTimeout);
+            //     startScroll(e);
+            // } else {
+            //     startScroll(e);
+            //     self.waitingToScroll = true;
+            // }
+            self.scroll(e);
             // }
         });
     }
@@ -71,43 +70,55 @@ var TableScroller = function (cols, rows) {
 
         var scrollTop = DOM.tableWrapper.scrollTop;
 
-        if (self.previousTop === scrollTop) {
-            this.logger('same top figure out to ignore or relevance for ipad');
-            return;
-        }
+        if (self.previousTop === scrollTop) return;
 
         var downScroll = this.previousTop < scrollTop;
 
-        self.currentPage = Math.abs(Math.floor(scrollTop / this.getPageHeight())) + 1;
+        self.setCurrentPage(scrollTop)
 
         self.detectBigScroll(scrollTop);
 
         if (downScroll) {
-            if (this.pageNotInBuffer(self.currentPage + 1)) self.append();
+            self.scrollDown();
         } else {
-            if (self.currentPage > 1 || !this.pageNotInBuffer(1)) {
-                if (this.pageNotInBuffer(self.currentPage - 1)) self.prepend();
-
-            } else if (scrollTop <= 0) {
-                this.adjustForPage(1);
-            }
+            self.scrollUp(scrollTop);
         }
+
         this.previousTop = scrollTop;
     };
+
+    this.scrollUp = function (scrollTop) {
+        if (self.currentPage > 1 || !self.pageNotInBuffer(1)) {
+            if (self.pageNotInBuffer(self.currentPage - 1)) {
+                self.prepend();
+            }
+
+        } else if (scrollTop <= 0) {
+            self.adjustForPage(1);
+        }
+    };
+
+    this.scrollDown = function () {
+        if (self.pageNotInBuffer(self.currentPage + 1)) {
+            self.append();
+        }
+    };
+
     this.removePage = function (pageIndex) {
         var DOMPage = By.id('page_' + pageIndex),
             index = self.visibleBuffer.indexOf(pageIndex);
 
         if (DOMPage && index >= 0) {
             //bufferHeight = DOMPage.offsetHeight;
-            DOM.table.removeChild(DOMPage);
+            var oldPage = DOM.table.removeChild(DOMPage);
+            oldPage = null;
             self.visibleBuffer.splice(index, 1); //remove page from vis buffer                    
             // this.logger('housekept page: ' + (pageIndex));
         }
     };
     this.append = function () {
         var pageIndexToRemove = self.visibleBuffer[0],
-            newPage = self.currentPage + 1, yAdjustment = 0;
+            newPage = self.currentPage + 1;
 
         if (this.inRange() && self.pageBuffer[pageIndexToRemove]) { //within range
 
@@ -223,15 +234,15 @@ var TableScroller = function (cols, rows) {
         return self.visibleBuffer.indexOf(pageNumber) < 0
     };
 
-    this.detectBigScroll = function (scrollY) {
+    this.detectBigScroll = function (scrollTop) {
 
         var pageHeight = this.getPageHeight(),
-            pageJumped = (Math.abs(scrollY - self.previousTop) > pageHeight);
+            pageJumped = (Math.abs(scrollTop - self.previousTop) > pageHeight);
 
         //Detect if a page has 'jumped' from a continued scrolling range                     
         if (pageJumped) {
-            // this.logger('Page out of range! Readjusting: ' + scrollY + ' > ' + (self.currentPage * pageHeight));
-            self.currentPage = Math.floor(scrollY / (pageHeight)) + 1;
+            // this.logger('Page out of range! Readjusting: ' + scrollTop + ' > ' + (self.currentPage * pageHeight));
+            self.setCurrentPage(scrollTop);
             self.adjustForPage(self.currentPage);
         }
     };
@@ -258,20 +269,20 @@ var TableScroller = function (cols, rows) {
         sTop = scrollTop - offsetHeight * (self.currentPage - 1);
 
         if (sTop / self.rowHeight > self.pageSize) { //if we the pages has drifted for some reason, readjust page
-            self.currentPage = Math.floor(scrollTop / (self.pageSize * self.rowHeight)) + 1;
+            self.setCurrentPage(scrollTop)
             // this.logger('Offset exception! Readjusting page ' + self.page);
             self.adjustForPage(self.currentPage);
         }
     };
 
-    this.isOnTouchDevice = function () {
-            try {
-                document.createEvent("TouchEvent");
-                return (typeof Touch == "object") ? true : false; //chrome 
-            } catch (e) {
-                return false;
-            }
+    this.getCurrentPage = function (scrollTop) {
+        return Math.abs(Math.floor(scrollTop / self.getPageHeight())) + 1;
     };
+
+    this.setCurrentPage = function (scrollTop) {
+        self.currentPage = self.getCurrentPage(scrollTop);
+    };
+
     this.changeTableTop = function (top) {
         DOM.table.style.top = top + 'px';
     };
@@ -283,6 +294,15 @@ var TableScroller = function (cols, rows) {
         // if (!el || el instanceof HTMLUnknownElement) { throw 'Tag ' + tag + ' could not be created'; }
         if (id) { el.id = id; }
         return el;
+    };
+
+    this.isOnTouchDevice = function () {
+        try {
+            document.createEvent("TouchEvent");
+            return (typeof Touch == "object") ? true : false; //chrome 
+        } catch (e) {
+            return false;
+        }
     };
 
     this.logger =  function (msg) {     
