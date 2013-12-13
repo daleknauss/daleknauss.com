@@ -3,12 +3,20 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <title>Ipad: Scrolling</title>              
-    <script src="js/By.Selector.js"></script>  
-    <script src="js/infinite-scroll.js"></script>
-    <script src="js/table-creator.js"></script>
     <link href="css/Advent.Rules.TableViewerNew.css" rel="stylesheet" />
 </head>
 <body>
-    <div class="huge" style="height: 420000px;"></div>
 </body>
 </html>
+
+<script>
+    var div = document.createElement('div');
+    var inner = '';
+    for (var i = 0; i <= 1000; i++){
+        inner += '<div class="bodyRow"><span>411</span><span>Passed</span><span>19815.02</span><span>MARIA DRINAN</span></div>'
+    }
+    div.innerHTML = inner;
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementsByTagName('body')[0].appendChild(div);
+    });
+</script>

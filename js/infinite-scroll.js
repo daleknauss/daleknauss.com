@@ -6,7 +6,7 @@ var TableScroller = function (cols, rows) {
     this.maxPageBuffer = 3;
     this.rows = rows;
     this.columns = cols;
-    this.pageSize = 10000;
+    this.pageSize = 200;
     this.previousTop = 0;
     this.rowCount = this.rows.length;
     this.colCount = this.columns.length;
@@ -60,26 +60,26 @@ var TableScroller = function (cols, rows) {
         // });
 
         DOM.tableWrapper.removeEventListener(events.onEnd);
-        // DOM.tableWrapper.addEventListener(events.onEnd, function (e) {
-        //     // if (isTouchDevice) {
-        //     //     this.detectOffset();
-        //     // } else { //desktop
-        //     var startScroll = function (e) {
-        //         self.scrollTimeout = setTimeout(function () {
-        //             self.scroll(e);
-        //             self.waitingToScroll = false;
-        //         }, 300)
-        //     };
+        DOM.tableWrapper.addEventListener(events.onEnd, function (e) {
+            // if (isTouchDevice) {
+            //     this.detectOffset();
+            // } else { //desktop
+            var startScroll = function (e) {
+                self.scrollTimeout = setTimeout(function () {
+                    self.scroll(e);
+                    self.waitingToScroll = false;
+                }, 300)
+            };
 
-        //     if (self.waitingToScroll) {
-        //         clearTimeout(self.scrollTimeout);
-        //         startScroll(e);
-        //     } else {
-        //         startScroll(e);
-        //         self.waitingToScroll = true;
-        //     }
-        //     // }
-        // });
+            if (self.waitingToScroll) {
+                clearTimeout(self.scrollTimeout);
+                startScroll(e);
+            } else {
+                startScroll(e);
+                self.waitingToScroll = true;
+            }
+            // }
+        });
     }
 
     this.scroll = function (e) {
@@ -95,7 +95,7 @@ var TableScroller = function (cols, rows) {
 
         self.currentPage = Math.abs(Math.floor(scrollTop / this.getPageHeight())) + 1;
 
-        self.detectBigScroll(scrollTop);
+        if (self.detectBigScroll(scrollTop)) return;
 
         if (downScroll) {
             if (this.pageNotInBuffer(self.currentPage + 1)) self.append();
@@ -248,6 +248,9 @@ var TableScroller = function (cols, rows) {
             // this.logger('Page out of range! Readjusting: ' + scrollY + ' > ' + (self.currentPage * pageHeight));
             self.currentPage = Math.floor(scrollY / (pageHeight)) + 1;
             self.adjustForPage(self.currentPage);
+            return true;
+        } else {
+            return false;
         }
     };
 
