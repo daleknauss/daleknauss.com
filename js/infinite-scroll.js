@@ -42,7 +42,7 @@ var TableScroller = function (cols, rows) {
         //set virtual scroll area
         DOM.scrollY.style.height = (this.rows.length * rowHeight) + 'px';
 
-        //initialize events
+        // initialize events
         // DOM.tableWrapper.addEventListener(events.onStart, function (e) {
         //     //todo;put in multitouch check
         //     if (this.isStarted) {
@@ -95,7 +95,7 @@ var TableScroller = function (cols, rows) {
 
         self.currentPage = Math.abs(Math.floor(scrollTop / this.getPageHeight())) + 1;
 
-        if (self.detectBigScroll(scrollTop)) return;
+        self.detectBigScroll(scrollTop);
 
         if (downScroll) {
             if (this.pageNotInBuffer(self.currentPage + 1)) self.append();
@@ -248,9 +248,6 @@ var TableScroller = function (cols, rows) {
             // this.logger('Page out of range! Readjusting: ' + scrollY + ' > ' + (self.currentPage * pageHeight));
             self.currentPage = Math.floor(scrollY / (pageHeight)) + 1;
             self.adjustForPage(self.currentPage);
-            return true;
-        } else {
-            return false;
         }
     };
 
