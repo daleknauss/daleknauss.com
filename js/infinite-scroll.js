@@ -16,7 +16,7 @@ var TableScroller = function (cols, rows) {
     //private variables
     var self = this,
         DEFAULT_ROW_HEIGHT = 42,
-        WAITING_TIME = 200, // milliseconds
+        WAITING_TIME = 100, // milliseconds
         DOM = {};
 
     this.init = function () {
@@ -49,17 +49,15 @@ var TableScroller = function (cols, rows) {
         DOM.tableWrapper.removeEventListener(events.onEnd);
         DOM.tableWrapper.addEventListener(events.onEnd, function (e) {
 
-            var scrollTimeout;
-
             var startScroll = function (e) {
-                scrollTimeout = setTimeout(function () {
+                self.scrollTimeout = setTimeout(function () {
                     self.scroll(e);
                     self.waitingToScroll = false;
                 }, WAITING_TIME)
             };
 
             if (self.waitingToScroll) {
-                clearTimeout(scrollTimeout);
+                clearTimeout(self.scrollTimeout);
                 startScroll(e);
             } else {
                 startScroll(e);
@@ -69,16 +67,16 @@ var TableScroller = function (cols, rows) {
         });
     };
 
-    this.queuePages = function () {
-        setInterval(function () {
-            if (self.waitingToScroll) return;
-            if (self.currentPage === 1) {
-                self.append();
-            } else {
+    // this.queuePages = function () {
+    //     setInterval(function () {
+    //         if (self.waitingToScroll) return;
+    //         if (self.currentPage === 1) {
+    //             self.append();
+    //         } else {
 
-            }
-        }, 500)
-    };
+    //         }
+    //     }, 500)
+    // };
 
     this.scroll = function (e) {
 
@@ -116,8 +114,17 @@ var TableScroller = function (cols, rows) {
     this.removePage = function (pageIndex) {
         if (!pageIndex) return;
 
-        var DOMPage = By.id('page_' + pageIndex),
+        var table = DOM.table,
+            DOMPage,
             index = self.visibleBuffer.indexOf(pageIndex);
+
+        if (index === 0) {
+            DOMPage = table.firstChild;
+        } else if (index === self.visibleBuffer.length - 1) {
+            DOMPage = table.lastChild;
+        } else {
+            DOMPage = By.id('page_' + pageIndex);
+        }
 
         if (DOMPage && index >= 0) {
             //bufferHeight = DOMPage.offsetHeight;
@@ -128,7 +135,10 @@ var TableScroller = function (cols, rows) {
     };
 
     this.removeAllPages = function () {
-        DOM.table.innerHTML = '';
+        var table = DOM.table;
+        while (table.lastChild) {
+            table.removeChild(table.lastChild);
+        }
         this.visibleBuffer.length = 0;
     };
 
@@ -163,13 +173,13 @@ var TableScroller = function (cols, rows) {
     };
     this.prepend = function () {
         var pageIndexToRemove = self.visibleBuffer[this.maxPageBuffer - 1],
-            newPageIndex = self.currentPage - 1,
+            newPage = self.currentPage - 1,
             bufferFull = this.visibleBufferFull();
 
-        if (!self.pageNotInBuffer(newPageIndex)) return;
+        if (!self.pageNotInBuffer(newPage)) return;
 
         if (this.inRange()) {    //within range
-            if (self.visibleBuffer[0] !== newPageIndex) { //if we don't have the first page in buffer already
+            if (self.visibleBuffer[0] !== newPage) { //if we don't have the first page in buffer already
                 // this.logger('pageIndexToRemove: ' + pageIndexToRemove);
 
                 if (bufferFull) {
@@ -177,8 +187,8 @@ var TableScroller = function (cols, rows) {
                     this.removePage(pageIndexToRemove);
                 }
 
-                //newPageIndex = self.visibleBuffer[0] - 1;
-                self.bind(newPageIndex, false);
+                //newPage = self.visibleBuffer[0] - 1;
+                self.bind(newPage, false);
 
                 if (!bufferFull) self.bind(newPage - 1);
                 //this.logger('new page:' + self.page + ', ' + prevBufferEnd + 'px,' + (prevBufferEnd + self.pageSize));
