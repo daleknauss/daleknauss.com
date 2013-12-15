@@ -41,21 +41,25 @@ var TableScroller = function (cols, rows) {
         DOM.scrollY = By.id('virtualScrollY');
 
         this.bind(1);
+        this.bind(2);
+        this.bind(3);
         //set virtual scroll area
         DOM.scrollY.style.height = (this.rows.length * rowHeight) + 'px';
 
         DOM.tableWrapper.removeEventListener(events.onEnd);
         DOM.tableWrapper.addEventListener(events.onEnd, function (e) {
 
+            var scrollTimeout;
+
             var startScroll = function (e) {
-                self.scrollTimeout = setTimeout(function () {
+                scrollTimeout = setTimeout(function () {
                     self.scroll(e);
                     self.waitingToScroll = false;
                 }, WAITING_TIME)
             };
 
             if (self.waitingToScroll) {
-                clearTimeout(self.scrollTimeout);
+                clearTimeout(scrollTimeout);
                 startScroll(e);
             } else {
                 startScroll(e);
@@ -63,7 +67,18 @@ var TableScroller = function (cols, rows) {
             }
             // }
         });
-    }
+    };
+
+    this.queuePages = function () {
+        setInterval(function () {
+            if (self.waitingToScroll) return;
+            if (self.currentPage === 1) {
+                self.append();
+            } else {
+
+            }
+        }, 500)
+    };
 
     this.scroll = function (e) {
 
@@ -78,30 +93,25 @@ var TableScroller = function (cols, rows) {
         self.detectBigScroll(scrollTop);
 
         if (downScroll) {
-            self.scrollDown();
+            self.append();
         } else {
-            self.scrollUp(scrollTop);
+            self.prepend();
         }
 
         this.previousTop = scrollTop;
     };
 
-    this.scrollUp = function (scrollTop) {
-        if (self.currentPage > 1 || !self.pageNotInBuffer(1)) {
-            if (self.pageNotInBuffer(self.currentPage - 1)) {
-                self.prepend();
-            }
+    // this.scrollUp = function (scrollTop) {
+    //     if (self.currentPage > 1 || !self.pageNotInBuffer(1)) {
+    //         self.prepend();
+    //     } else if (scrollTop <= 0) {
+    //         self.adjustForPage(1);
+    //     }
+    // };
 
-        } else if (scrollTop <= 0) {
-            self.adjustForPage(1);
-        }
-    };
-
-    this.scrollDown = function () {
-        if (self.pageNotInBuffer(self.currentPage + 1)) {
-            self.append();
-        }
-    };
+    // this.scrollDown = function () {
+    //     self.append();
+    // };
 
     this.removePage = function (pageIndex) {
         if (!pageIndex) return;
@@ -124,11 +134,14 @@ var TableScroller = function (cols, rows) {
 
     this.append = function () {
         var pageIndexToRemove = self.visibleBuffer[0],
-            newPage = self.currentPage + 1;
+            newPage = self.currentPage + 1,
+            bufferFull = this.visibleBufferFull();
+
+        if (!self.pageNotInBuffer(newPage)) return;
 
         if (this.inRange() && self.pageBuffer[pageIndexToRemove]) { //within range
 
-            if (self.visibleBuffer.length >= this.maxPageBuffer) {
+            if (bufferFull) {
                 this.removePage(pageIndexToRemove);
 
                 //adjust top position since we lost the height of height of the removed els                
@@ -139,30 +152,35 @@ var TableScroller = function (cols, rows) {
                 self.bind(newPage);
             }
 
+            if (!bufferFull) self.bind(newPage + 1); // try to add another page
+
         } else if (self.currentPage === 1) {
-            if (this.pageNotInBuffer(newPage)) {
+            // if (this.pageNotInBuffer(newPage)) {
                 self.bind(newPage);
-            }
+            // }
         }
 
     };
     this.prepend = function () {
         var pageIndexToRemove = self.visibleBuffer[this.maxPageBuffer - 1],
-            yAdjustment = 0,
-            newPageIndex = self.currentPage - 1;
+            newPageIndex = self.currentPage - 1,
+            bufferFull = this.visibleBufferFull();
 
+        if (!self.pageNotInBuffer(newPageIndex)) return;
 
         if (this.inRange()) {    //within range
             if (self.visibleBuffer[0] !== newPageIndex) { //if we don't have the first page in buffer already
                 // this.logger('pageIndexToRemove: ' + pageIndexToRemove);
 
-                if (self.visibleBuffer.length >= this.maxPageBuffer) {
+                if (bufferFull) {
                     //do some housekeeping                        
                     this.removePage(pageIndexToRemove);
                 }
 
                 //newPageIndex = self.visibleBuffer[0] - 1;
                 self.bind(newPageIndex, false);
+
+                if (!bufferFull) self.bind(newPage - 1);
                 //this.logger('new page:' + self.page + ', ' + prevBufferEnd + 'px,' + (prevBufferEnd + self.pageSize));
                 this.changeTableTop(Math.abs(DOM.table.offsetTop) - this.getPageHeight());
             }
@@ -170,9 +188,8 @@ var TableScroller = function (cols, rows) {
     };
 
     this.bind = function (page, append) {
-        if (append === void 0) append = true;
-
         if (page > self.pageBuffer.length) return false;
+        if (append === void 0) append = true;
 
         var tbody = this.createTbody(page);
 
@@ -253,6 +270,10 @@ var TableScroller = function (cols, rows) {
             self.setCurrentPage(scrollTop);
             self.adjustForPage(self.currentPage);
         }
+    };
+
+    this.visibleBufferFull = function () {
+        return self.visibleBuffer.length >= this.maxPageBuffer;
     };
 
     this.getRowHeight = function () {
