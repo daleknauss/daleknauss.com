@@ -47,21 +47,20 @@ var TableScroller = function (cols, rows) {
         DOM.tableWrapper.removeEventListener(events.onEnd);
         DOM.tableWrapper.addEventListener(events.onEnd, function (e) {
 
-            // var startScroll = function (e) {
-            //     self.scrollTimeout = setTimeout(function () {
-            //         self.scroll(e);
-            //         self.waitingToScroll = false;
-            //     }, WAITING_TIME)
-            // };
+            var startScroll = function (e) {
+                self.scrollTimeout = setTimeout(function () {
+                    self.scroll(e);
+                    self.waitingToScroll = false;
+                }, WAITING_TIME)
+            };
 
-            // if (self.waitingToScroll) {
-            //     clearTimeout(self.scrollTimeout);
-            //     startScroll(e);
-            // } else {
-            //     startScroll(e);
-            //     self.waitingToScroll = true;
-            // }
-            self.scroll(e);
+            if (self.waitingToScroll) {
+                clearTimeout(self.scrollTimeout);
+                startScroll(e);
+            } else {
+                startScroll(e);
+                self.waitingToScroll = true;
+            }
             // }
         });
     }
@@ -105,17 +104,24 @@ var TableScroller = function (cols, rows) {
     };
 
     this.removePage = function (pageIndex) {
+        if (!pageIndex) return;
+
         var DOMPage = By.id('page_' + pageIndex),
             index = self.visibleBuffer.indexOf(pageIndex);
 
         if (DOMPage && index >= 0) {
             //bufferHeight = DOMPage.offsetHeight;
-            var oldPage = DOM.table.removeChild(DOMPage);
-            oldPage = null;
+            DOM.table.removeChild(DOMPage);
             self.visibleBuffer.splice(index, 1); //remove page from vis buffer                    
             // this.logger('housekept page: ' + (pageIndex));
         }
     };
+
+    this.removeAllPages = function () {
+        DOM.table.innerHTML = '';
+        this.visibleBuffer.length = 0;
+    };
+
     this.append = function () {
         var pageIndexToRemove = self.visibleBuffer[0],
             newPage = self.currentPage + 1;
@@ -212,12 +218,14 @@ var TableScroller = function (cols, rows) {
     };
 
     this.adjustForPage = function (page) {
-        var bufferLength = self.visibleBuffer.length;
+        // var bufferLength = self.visibleBuffer.length;
 
         //remove dom pages
-        while (bufferLength-- >= 0) {
-            this.removePage(self.visibleBuffer[bufferLength], false);
-        }
+        // while (bufferLength-- >= 0) {
+        //     this.removePage(self.visibleBuffer[bufferLength]);
+        // }
+        this.removeAllPages();
+
         this.bind(page);
 
         var offsetHeight = (page - 1) * this.getPageHeight();
