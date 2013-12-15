@@ -16,7 +16,6 @@ var TableScroller = function (cols, rows) {
     //private variables
     var self = this,
         DEFAULT_ROW_HEIGHT = 42,
-        WAITING_TIME = 100, // milliseconds
         DOM = {};
 
     this.init = function () {
@@ -46,20 +45,26 @@ var TableScroller = function (cols, rows) {
         //set virtual scroll area
         DOM.scrollY.style.height = (this.rows.length * rowHeight) + 'px';
 
-        DOM.tableWrapper.addEventListener(events.onMove, function (e) {
-            if (self.waitingToScroll) {
-                e.preventDefault();
-            }
-        })
-
         DOM.tableWrapper.removeEventListener(events.onEnd);
-        DOM.tableWrapper.addEventListener(events.onEnd, function (e) {
 
+        var waitingTime = isTouchDevice ? 200 : 0;
+        if (isTouchDevice) {
+            this.createMobileScrollEvent();
+        } else {
+            DOM.tableWrapper.addEventListener(events.onEnd, function (e) {
+                self.scroll(e);
+            });
+        }
+
+    };
+
+    this.createMobileScrollEvent = function () {
+        DOM.tableWrapper.addEventListener(events.onEnd, function (e) {
             var startScroll = function (e) {
                 self.scrollTimeout = setTimeout(function () {
                     self.scroll(e);
                     self.waitingToScroll = false;
-                }, WAITING_TIME)
+                }, 200)
             };
 
             if (self.waitingToScroll) {
@@ -69,7 +74,6 @@ var TableScroller = function (cols, rows) {
                 startScroll(e);
                 self.waitingToScroll = true;
             }
-            // }
         });
     };
 
