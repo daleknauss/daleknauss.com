@@ -12,6 +12,7 @@ var TableScroller = function (cols, rows) {
     this.colCount = this.columns.length;
     this.waitingToScroll = false;
     this.scrollTimeout = null;
+    this.waitingTime = 0;
     
     //private variables
     var self = this,
@@ -21,8 +22,8 @@ var TableScroller = function (cols, rows) {
     this.init = function () {
         var isTouchDevice = this.isOnTouchDevice();
         var events = {
-            onStart: isTouchDevice ? 'touchstart' : 'mousedown',
-            onMove: isTouchDevice ? 'touchmove' : 'mousemove',
+            // onStart: isTouchDevice ? 'touchstart' : 'mousedown',
+            // onMove: isTouchDevice ? 'touchmove' : 'mousemove',
             onEnd: isTouchDevice ? 'touchend' : 'scroll'
         };
 
@@ -47,34 +48,33 @@ var TableScroller = function (cols, rows) {
 
         DOM.tableWrapper.removeEventListener(events.onEnd);
 
-        var waitingTime = isTouchDevice ? 200 : 0;
-        if (isTouchDevice) {
-            this.createMobileScrollEvent();
-        } else {
-            DOM.tableWrapper.addEventListener(events.onEnd, function (e) {
-                self.scroll(e);
-            });
-        }
+        if (isTouchDevice) this.waitingTime = 200;
+        this.createScrollEvent();
 
     };
 
-    this.createMobileScrollEvent = function () {
+    this.createScrollEvent = function () {
         DOM.tableWrapper.addEventListener(events.onEnd, function (e) {
-            var startScroll = function (e) {
-                self.scrollTimeout = setTimeout(function () {
-                    self.scroll(e);
-                    self.waitingToScroll = false;
-                }, 200)
-            };
+            if (self.isOnTouchDevice()) {
 
-            if (self.waitingToScroll) {
-                clearTimeout(self.scrollTimeout);
-                startScroll(e);
+                if (self.waitingToScroll) {
+                    clearTimeout(self.scrollTimeout);
+                    self.startScroll(e);
+                } else {
+                    self.startScroll(e);
+                    self.waitingToScroll = true;
+                }
             } else {
-                startScroll(e);
-                self.waitingToScroll = true;
+                self.scroll(e);
             }
         });
+    };
+
+    this.startScroll = function (e) {
+        self.scrollTimeout = setTimeout(function () {
+            self.scroll(e);
+            self.waitingToScroll = false;
+        }, self.waitingTime)
     };
 
     this.scroll = function (e) {
