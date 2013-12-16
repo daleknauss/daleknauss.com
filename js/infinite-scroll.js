@@ -34,8 +34,8 @@ var TableScroller = function (cols, rows) {
         DOM.scrollY = By.id('virtualScrollY');
 
         this.bind(1);
-        this.bind(2);
-        this.bind(3);
+        // this.bind(2);
+        // this.bind(3);
         //set virtual scroll area
         DOM.scrollY.style.height = (this.rows.length * rowHeight) + 'px';
 
