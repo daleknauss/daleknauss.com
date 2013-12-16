@@ -118,13 +118,13 @@ var TableScroller = function (cols, rows) {
             DOMPage,
             index = self.visibleBuffer.indexOf(pageIndex);
 
-        if (index === 0) {
-            DOMPage = table.firstChild;
-        } else if (index === self.visibleBuffer.length - 1) {
-            DOMPage = table.lastChild;
-        } else {
+        // if (index === 0) {
+        //     DOMPage = table.firstChild;
+        // } else if (index === self.visibleBuffer.length - 1) {
+        //     DOMPage = table.lastChild;
+        // } else {
             DOMPage = By.id('page_' + pageIndex);
-        }
+        // }
 
         if (DOMPage && index >= 0) {
             //bufferHeight = DOMPage.offsetHeight;
