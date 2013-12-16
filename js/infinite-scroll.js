@@ -130,29 +130,25 @@ var TableScroller = function (cols, rows) {
             //bufferHeight = DOMPage.offsetHeight;
             this.addReuseableTbody(DOMPage);
             DOM.table.removeChild(DOMPage);
-            
-            DOMPage = null;
-            delete DOMPage;
-            
+
             self.visibleBuffer.splice(index, 1); //remove page from vis buffer                    
             // this.logger('housekept page: ' + (pageIndex));
         }
     };
 
     this.removeAllPages = function () {
-        var table = DOM.table,
-            DOMPage;
-        while (DOMPage = table.lastChild) {
+        var DOMPage;
+        while (this.visibleBuffer.length > 0) {
+            DOMPage = By.id('page_' + this.visibleBuffer.shift());
             this.addReuseableTbody(DOMPage);
-            table.removeChild(DOMPage);
+            DOM.table.removeChild(DOMPage);
         }
-        delete DOMPage;
-        
-        this.visibleBuffer.length = 0;
     };
 
     this.addReuseableTbody = function (tbody) {
-        this.reuseableTbodies.push(tbody);
+        if (typeof tbody === "object") {
+            this.reuseableTbodies.push(tbody);
+        }
     };
 
     this.append = function () {
