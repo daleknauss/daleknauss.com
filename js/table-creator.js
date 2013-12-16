@@ -1,6 +1,6 @@
 var TableCreator = function () {
 	this.noRows = 10000;
-	self = this;
+	var self = this;
 
     this.columnSettings = [
         { "FieldTag": "ID", "Caption": "ID", "BasicType": "Int", "UIType": "Int", "Sequence": 0, "Aggregate": "Max", "Width": 60, "IsHidden": false, "IsCustomizable": true },

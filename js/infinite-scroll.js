@@ -130,6 +130,10 @@ var TableScroller = function (cols, rows) {
             //bufferHeight = DOMPage.offsetHeight;
             this.reuseableTbodies.push(DOMPage)
             DOM.table.removeChild(DOMPage);
+            
+            DOMPage = null;
+            delete DOMPage;
+            
             self.visibleBuffer.splice(index, 1); //remove page from vis buffer                    
             // this.logger('housekept page: ' + (pageIndex));
         }
@@ -142,6 +146,8 @@ var TableScroller = function (cols, rows) {
             this.addReuseableTbody(DOMPage);
             table.removeChild(DOMPage);
         }
+        delete DOMPage;
+        
         this.visibleBuffer.length = 0;
     };
 
@@ -233,12 +239,24 @@ var TableScroller = function (cols, rows) {
     };
 
     this.reuseTbody = function (page) {
-        var tbody = this.reuseableTbodies.pop();
+        if(this.reuseableTbodies.length < 1) {
+            console.error('reusableTbodies is empty, can not reuse');
+        }
+        
+        var tbody = this.reuseableTbodies.shift();
+        
+        if(typeof tbody === 'undefined') {
+            console.error('tbody is undefined', this.reuseableTbodies.length);
+        }
+        console.log('TBODY', tbody, this.reuseableTbodies.length);
+        
         var rowsToCreate = this.pageBuffer[page - 1].length;
         var i, y, row, rowData, cell, fieldTag;
+        tbody.id = "page_" + page;
 
         for (i = 0; i < rowsToCreate; i++) {
             row = tbody.children[i];
+            row.id = "row_" + page + (i + 1);
             rowData = self.pageBuffer[page - 1][i];
 
             for (y = 0; y < this.colCount; y++) {
