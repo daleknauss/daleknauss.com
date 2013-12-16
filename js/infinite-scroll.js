@@ -39,6 +39,10 @@ var TableScroller = function (cols, rows) {
         //set virtual scroll area
         DOM.scrollY.style.height = (this.rows.length * rowHeight) + 'px';
 
+        // setInterval(function () {
+        //    self.scroll(); 
+        // }, 100)
+
 
         this.createScrollEvent();
 
@@ -176,7 +180,8 @@ var TableScroller = function (cols, rows) {
         if (this.inRange()) {    //within range
             if (self.visibleBuffer[0] !== newPage) { //if we don't have the first page in buffer already
 
-                if (bufferFull) {                      
+                if (bufferFull) {
+                    //do some housekeeping                        
                     this.removePage(pageIndexToRemove);
                 }
 
@@ -236,12 +241,19 @@ var TableScroller = function (cols, rows) {
     };
 
     this.adjustForPage = function (page) {
+        // var bufferLength = self.visibleBuffer.length;
+
+        //remove dom pages
+        // while (bufferLength-- >= 0) {
+        //     this.removePage(self.visibleBuffer[bufferLength]);
+        // }
         this.removeAllPages();
 
         this.bind(page);
 
         var offsetHeight = (page - 1) * this.getPageHeight();
         this.changeTableTop(offsetHeight);
+        // this.logger('adjust top: ' + DOM.table.style.top);
     };
 
     ///private functions
@@ -260,6 +272,7 @@ var TableScroller = function (cols, rows) {
 
         //Detect if a page has 'jumped' from a continued scrolling range                     
         if (pageJumped) {
+            // this.logger('Page out of range! Readjusting: ' + scrollTop + ' > ' + (self.currentPage * pageHeight));
             self.setCurrentPage(scrollTop);
             self.adjustForPage(self.currentPage);
         }
