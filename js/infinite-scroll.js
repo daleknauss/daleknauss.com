@@ -12,6 +12,7 @@ var TableScroller = function (cols, rows) {
     this.colCount = this.columns.length;
     this.waitingToScroll = false;
     this.scrollTimeout = null;
+    this.reuseableTbodies = [];
     
     //private variables
     var self = this,
@@ -51,7 +52,7 @@ var TableScroller = function (cols, rows) {
     this.createScrollEvent = function () {
         var isTouchDevice = this.isOnTouchDevice();
         var onEnd = isTouchDevice ? 'touchend' : 'scroll';
-        var waitingTime = isTouchDevice ? 200 : 0;
+        var waitingTime = isTouchDevice ? 300 : 0;
 
         DOM.tableWrapper.removeEventListener(onEnd);
         DOM.tableWrapper.addEventListener(onEnd, function (e) {
@@ -127,6 +128,7 @@ var TableScroller = function (cols, rows) {
 
         if (DOMPage && index >= 0) {
             //bufferHeight = DOMPage.offsetHeight;
+            this.reuseableTbodies.push(DOMPage)
             DOM.table.removeChild(DOMPage);
             self.visibleBuffer.splice(index, 1); //remove page from vis buffer                    
             // this.logger('housekept page: ' + (pageIndex));
@@ -134,9 +136,11 @@ var TableScroller = function (cols, rows) {
     };
 
     this.removeAllPages = function () {
-        var table = DOM.table;
-        while (table.lastChild) {
-            table.removeChild(table.lastChild);
+        var table = DOM.table.
+            DOMPage;
+        while (DOMPage = table.lastChild) {
+            this.reuseableTbodies.push(DOMPage)
+            table.removeChild(DOMPage);
         }
         this.visibleBuffer.length = 0;
     };
@@ -213,9 +217,39 @@ var TableScroller = function (cols, rows) {
     };
 
     this.createTbody = function (page) {
+        var tbody;
+
+        if (this.reuseableTbodies.length > 0) {
+            tbody = this.reuseTbody(page);
+        } else {
+            tbody = this.createNewTbody(page);
+        }
+
+        return tbody;
+    };
+
+    this.reuseTbody = function (page) {
+        var tbody = this.reuseableTbodies.pop();
+        var rowsToCreate = this.pageBuffer[page - 1].length;
+        var i, y, row, rowData, cell, fieldTag;
+
+        for (i = 0; i < rowsToCreate; i++) {
+            row = tbody.children[i];
+            rowData = self.pageBuffer[page - 1][i];
+
+            for (y = 0; y < this.colCount; y++) {
+                fieldTag = this.columns[y].FieldTag;
+                cell = row.children[y];
+
+                cell.textContent = rowData[fieldTag];
+            }
+        }
+        return tbody;
+    };
+
+    this.createNewTbody = function (page) {
         var tbody = this.DOM_Factory('tbody', 'page_' + page);
         tbody.classList.add('pageBuffer');
-
         // get real page length to avoid issue with last page being too short
         var rowsToCreate = self.pageBuffer[page - 1].length
 
@@ -223,7 +257,7 @@ var TableScroller = function (cols, rows) {
             var row = this.createRow(page, i);
             tbody.appendChild(row);
         }
-        return tbody;
+        return tbody;   
     };
 
     this.createRow = function (page, i) {
