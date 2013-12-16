@@ -128,7 +128,7 @@ var TableScroller = function (cols, rows) {
 
         if (DOMPage && index >= 0) {
             //bufferHeight = DOMPage.offsetHeight;
-            this.reuseableTbodies.push(DOMPage)
+            this.addReuseableTbody(DOMPage);
             DOM.table.removeChild(DOMPage);
             
             DOMPage = null;
@@ -243,8 +243,8 @@ var TableScroller = function (cols, rows) {
             console.error('reusableTbodies is empty, can not reuse');
         }
         
-        console.log('TBODY', tbody, this.reuseableTbodies.length, this.reuseableTbodies);
         var tbody = this.reuseableTbodies.shift();
+        console.log('TBODY', tbody, typeof tbody, this.reuseableTbodies);
         
         if(typeof tbody === 'undefined') {
             console.error('tbody is undefined', this.reuseableTbodies.length);
