@@ -39,12 +39,8 @@ var TableScroller = function (cols, rows) {
         //set virtual scroll area
         DOM.scrollY.style.height = (this.rows.length * rowHeight) + 'px';
 
-        setInterval(function () {
-           self.scroll(); 
-        }, 100)
 
-
-        // this.createScrollEvent();
+        this.createScrollEvent();
 
     };
 
