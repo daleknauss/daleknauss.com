@@ -6,7 +6,7 @@ var TableScroller = function (cols, rows) {
     this.maxPageBuffer = 3;
     this.rows = rows;
     this.columns = cols;
-    this.pageSize = 100;
+    this.pageSize = 200;
     this.previousTop = 0;
     this.rowCount = this.rows.length;
     this.colCount = this.columns.length;
@@ -243,12 +243,12 @@ var TableScroller = function (cols, rows) {
             console.error('reusableTbodies is empty, can not reuse');
         }
         
+        console.log('TBODY', tbody, this.reuseableTbodies.length, this.reuseableTbodies);
         var tbody = this.reuseableTbodies.shift();
         
         if(typeof tbody === 'undefined') {
             console.error('tbody is undefined', this.reuseableTbodies.length);
         }
-        console.log('TBODY', tbody, this.reuseableTbodies.length);
         
         var rowsToCreate = this.pageBuffer[page - 1].length;
         var i, y, row, rowData, cell, fieldTag;
