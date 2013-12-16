@@ -1,20 +1,20 @@
 ﻿/* ===========================
-    TableViewer table settings	 width:                  100%;
+    TableViewer table settings   width:                  100%;
 ============================== */
     table.TableViewer {
-	    border:                 none;    
-	    width:                  100%;
+        border:                 none;    
+        width:                  100%;
         empty-cells:            show;
     }
 
-    table.TableViewer thead tr th {	        
-	    border:                 none;
-	    -webkit-box-shadow:     inset 0 -2px 0 rgba(0,0,0,.12);
-	    background-color:       #f5f7f9; 
-	    /*background-image:       -webkit-linear-gradient(90deg, rgba(0,0,0,.03) 39.99%,
-					                rgba(0,0,0,.05) 60.01%, rgba(0,0,0,.09) 100%);*/
-	    color:                  #5c6573;
-	
+    table.TableViewer thead tr th {         
+        border:                 none;
+        -webkit-box-shadow:     inset 0 -2px 0 rgba(0,0,0,.12);
+        background-color:       #f5f7f9; 
+        /*background-image:       -webkit-linear-gradient(90deg, rgba(0,0,0,.03) 39.99%,
+                                    rgba(0,0,0,.05) 60.01%, rgba(0,0,0,.09) 100%);*/
+        color:                  #5c6573;
+    
         overflow:               hidden;
         border-style:           solid;
         border-width:           0;
@@ -25,13 +25,16 @@
     }
         
     table.TableViewer {
-        /* font-size:              13px;          font-family:	        'Arial', sans-serif;                */
+        /* font-size:              13px;          font-family:          'Arial', sans-serif;                */
         overflow:               hidden;
         border-spacing:         0;
         padding:                0;
       
-        z-index:				1;
+        z-index:                1;
         table-layout:           fixed; 
+/*        background: url(
+            data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAqCAIAAAD9HKYrAAAAG0lEQVQImWN4/vIlEwMDA8P///+ZGBgYBisGALaXBgcjLRwjAAAAAElFTkSuQmCC
+        ) repeat; */
     }
     table.TableViewer thead tr th, table.TableViewer tfoot tr th {
         border:                 none;
@@ -46,72 +49,72 @@
         overflow:               hidden;
     }
     table.TableViewer tbody tr td {
-		-moz-hyphens:			auto;
-		hyphens:				auto;
-		white-space:			normal;
+        -moz-hyphens:           auto;
+        hyphens:                auto;
+        white-space:            normal;
         border-bottom:          2px solid #e7e9e9;
-/*		background:		        url(../../icons/td-bg20x20.gif);	
-        background:		        url(resources/icons/td-bg40x20.gif);*/
+/*      background:             url(../../icons/td-bg20x20.gif);    
+        background:             url(resources/icons/td-bg40x20.gif);*/
         background-repeat:      repeat-x;
-		/*  -webkit-linear-gradient(90deg, #fff 0%, #fff 60.01%, #edeff1 100%);
-            -webkit-box-shadow:		0 2px 0 #fff, inset 0 -2px 0 #e7e9e9;*/
+        /*  -webkit-linear-gradient(90deg, #fff 0%, #fff 60.01%, #edeff1 100%);
+            -webkit-box-shadow:     0 2px 0 #fff, inset 0 -2px 0 #e7e9e9;*/
         height:                 38px;
         line-height:            1.6em;
         color:                  #5c6573;
-		-moz-user-select:		-moz-none;
-		-khtml-user-select:		none;
-		-webkit-user-select:	none;
-		-o-user-select:			none;
-		user-select:			none;
-		-ms-text-overflow:		ellipsis;
-        text-overflow:			ellipsis;	
+        -moz-user-select:       -moz-none;
+        -khtml-user-select:     none;
+        -webkit-user-select:    none;
+        -o-user-select:         none;
+        user-select:            none;
+        -ms-text-overflow:      ellipsis;
+        text-overflow:          ellipsis;   
         vertical-align:         middle;
-        padding:                0 10px 2px 0;	
-		
+        padding:                0 10px 2px 0;   
+        
     }
 
     /*Give us some space, and mark first item*/
     table.TableViewer tbody tr td:first-child, 
-	table.TableViewer thead tr th:first-child,
-	table.TableViewer tfoot tr th:first-child  {
-        padding-left:           15px;		
+    table.TableViewer thead tr th:first-child,
+    table.TableViewer tfoot tr th:first-child  {
+        padding-left:           15px;       
         width:                  auto;
     }
-	table.TableViewer tbody tr th:first-child {
-		text-transform:         uppercase;
-		font-weight:            bold;
+    table.TableViewer tbody tr th:first-child {
+        text-transform:         uppercase;
+        font-weight:            bold;
 
-	}
+    }
     table.TableViewer tbody tr:nth-child(even) td {
         /*background-color:       #edeff1;*/
     }
     /* Sortable header*/
-	table.TableViewer thead tr th span {
-		
+    table.TableViewer thead tr th span {
+        
         padding:                .5em .6em .4em .6em;
-        line-height:			24px;
-    	vertical-align:         middle;
-    	cursor:                 pointer;    	
+        line-height:            24px;
+        vertical-align:         middle;
+        cursor:                 pointer;        
         font-weight:            normal;        
         text-align:             left;        
-    	border:                 0px solid blue;    	
+        border:                 0px solid blue;     
         background-position:    right center; 
         background-repeat:      no-repeat;
-        white-space:			nowrap;		/*deal with overflow textresizing*/
+        white-space:            nowrap;     /*deal with overflow textresizing*/
         overflow:               hidden;
-        -ms-text-overflow:		ellipsis;
-        text-overflow:			ellipsis;
+        -ms-text-overflow:      ellipsis;
+        text-overflow:          ellipsis;
         height:                 100%;
         /*min-height:             12px;        IE fix; dependant th height */
         display:                block;
     }
         
     table.TableViewer thead tr th span:hover {
-		/*background-image:		url(../img/icon_sort_up.png);*/
-		cursor:                 pointer;
+        /*background-image:     url(../img/icon_sort_up.png);*/
+        cursor:                 pointer;
     }
     table.TableViewer thead tr th span.sortUp {
-    	background-image:       url(../../icons/icon_sort_up.png);
+        background-image:       url(../../icons/icon_sort_up.png);
     }
     table.TableViewer thead tr th span.sortDown {
         background-image:       url(../../icons/icon_sort_down.png);
@@ -120,7 +123,7 @@
         color:                  #2e2e2e;
     }
 
-	table.TableViewer thead tr th, table.TableViewer tfoot tr th {
+    table.TableViewer thead tr th, table.TableViewer tfoot tr th {
         height:                 38px;
     }
 
@@ -165,16 +168,16 @@
         .advsScroll {       
             overflow-y:             auto; 
             overflow-x:             auto;
-            -webkit-overflow-scrolling: touch;
+            /*-webkit-overflow-scrolling: touch;*/
             /*Accelerated compositing
                 -webkit-transform:      translate3d(0,0,0);
             */
         } 
-        .advsScroll::-webkit-scrollbar {
+/*        .advsScroll::-webkit-scrollbar {
             width:                  12px;
             height:                 12px;    
             -web-kit-appearance:    slider-vertical;  
-        }
+        }*/
         /* Track */ 
  
         /* Handle */
@@ -183,9 +186,9 @@
             border-radius:          10px;
             background:             rgba(218,222,225,0.8); 
             -webkit-box-shadow:     inset 0 0 6px rgba(0,0,0,0.5); 
-        }
-         it only depends on the table's width, the width of the columns, and borders or cell spacing. 
-        .advsScroll::-webkit-scrollbar-thumb:window-inactive {
+        }*/
+        /* it only depends on the table's width, the width of the columns, and borders or cell spacing. */
+/*        .advsScroll::-webkit-scrollbar-thumb:window-inactive {
             background:             rgba(218,222,225,0.4); 
         }
 
@@ -193,15 +196,15 @@
             -webkit-box-shadow:     inset 0 0 6px rgba(0,0,0,0.3); 
             -webkit-border-radius:  10px;
             border-radius:          10px;
-        }
-*/
+        }*/
+
          #virtualScrollY {
             width:                  1px;
             height:                 1000px;
             visibility:             hidden;
-            float:                  left;
-            background-color:       Green;           
+            float:                  left;          
         }
+        
         #virtualBufferY {
             visibility:             hidden;
             height:                 0;

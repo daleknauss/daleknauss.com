@@ -157,7 +157,7 @@ var TableScroller = function (cols, rows) {
                 self.bind(newPage);
             }
 
-            if (!bufferFull) self.bind(newPage + 1); // try to add another page
+            // if (!bufferFull) self.bind(newPage + 1); // try to add another page
 
         } else if (self.currentPage === 1) {
             // if (this.pageNotInBuffer(newPage)) {
@@ -176,14 +176,13 @@ var TableScroller = function (cols, rows) {
         if (this.inRange()) {    //within range
             if (self.visibleBuffer[0] !== newPage) { //if we don't have the first page in buffer already
 
-                if (bufferFull) {
-                    //do some housekeeping                        
+                if (bufferFull) {                      
                     this.removePage(pageIndexToRemove);
                 }
 
                 self.bind(newPage, false);
 
-                if (!bufferFull) self.bind(newPage - 1);
+                // if (!bufferFull) self.bind(newPage - 1);
                 this.changeTableTop(Math.abs(DOM.table.offsetTop) - this.getPageHeight());
             }
         }
@@ -237,19 +236,12 @@ var TableScroller = function (cols, rows) {
     };
 
     this.adjustForPage = function (page) {
-        // var bufferLength = self.visibleBuffer.length;
-
-        //remove dom pages
-        // while (bufferLength-- >= 0) {
-        //     this.removePage(self.visibleBuffer[bufferLength]);
-        // }
         this.removeAllPages();
 
         this.bind(page);
 
         var offsetHeight = (page - 1) * this.getPageHeight();
         this.changeTableTop(offsetHeight);
-        // this.logger('adjust top: ' + DOM.table.style.top);
     };
 
     ///private functions
@@ -268,7 +260,6 @@ var TableScroller = function (cols, rows) {
 
         //Detect if a page has 'jumped' from a continued scrolling range                     
         if (pageJumped) {
-            // this.logger('Page out of range! Readjusting: ' + scrollTop + ' > ' + (self.currentPage * pageHeight));
             self.setCurrentPage(scrollTop);
             self.adjustForPage(self.currentPage);
         }
