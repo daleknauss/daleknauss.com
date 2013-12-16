@@ -136,13 +136,17 @@ var TableScroller = function (cols, rows) {
     };
 
     this.removeAllPages = function () {
-        var table = DOM.table.
+        var table = DOM.table,
             DOMPage;
         while (DOMPage = table.lastChild) {
-            this.reuseableTbodies.push(DOMPage)
+            this.addReuseableTbody(DOMPage);
             table.removeChild(DOMPage);
         }
         this.visibleBuffer.length = 0;
+    };
+
+    this.addReuseableTbody = function (tbody) {
+        this.reuseableTbodies.push(tbody);
     };
 
     this.append = function () {
