@@ -239,10 +239,11 @@ var TableScroller = function (cols, rows) {
             console.error('reusableTbodies is empty, can not reuse');
         }
         
+        console.log('reuseableTbodies', this.reuseableTbodies, this.reuseableTbodies.length);
         var tbody = this.reuseableTbodies.shift();
-        console.log('TBODY', tbody, typeof tbody, this.reuseableTbodies);
+        console.log(tbody, typeof tbody)
         
-        if(typeof tbody === 'undefined') {
+        if (typeof tbody === 'undefined') {
             console.error('tbody is undefined', this.reuseableTbodies.length);
         }
         
