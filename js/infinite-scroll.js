@@ -52,7 +52,7 @@ var TableScroller = function (cols, rows) {
     this.createScrollEvent = function () {
         var isTouchDevice = this.isOnTouchDevice();
         var onEnd = isTouchDevice ? 'touchend' : 'scroll';
-        var waitingTime = isTouchDevice ? 300 : 0;
+        var waitingTime = isTouchDevice ? 500 : 0;
 
         DOM.tableWrapper.removeEventListener(onEnd);
         DOM.tableWrapper.addEventListener(onEnd, function (e) {
@@ -88,7 +88,7 @@ var TableScroller = function (cols, rows) {
 
         self.setCurrentPage(scrollTop)
 
-        // self.detectBigScroll(scrollTop);
+        self.detectBigScroll(scrollTop);
 
         if (downScroll) {
             self.append();
