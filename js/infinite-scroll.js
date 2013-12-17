@@ -39,7 +39,7 @@ var TableScroller = function (cols, rows) {
         // this.bind(3);
         //set virtual scroll area
         document.body.addEventListener('touchmove',function(e){
-            if (self.waitingCount >= 3) {
+            if (self.waitingCount >= 2) {
                 e.preventDefault();
             }
         }, false); 
