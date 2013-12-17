@@ -52,7 +52,7 @@ var TableScroller = function (cols, rows) {
     this.createScrollEvent = function () {
         var isTouchDevice = this.isOnTouchDevice();
         var onEnd = isTouchDevice ? 'touchend' : 'scroll';
-        var self.waitingTime = isTouchDevice ? 500 : 0;
+        self.waitingTime = isTouchDevice ? 500 : 0;
 
         DOM.tableWrapper.removeEventListener(onEnd);
         DOM.tableWrapper.addEventListener(onEnd, function (e) {
@@ -72,7 +72,7 @@ var TableScroller = function (cols, rows) {
 
     this.startScroll = function () {
         self.scrollTimeout = setTimeout(function () {
-            self.scroll(e);
+            self.scroll();
             self.waitingToScroll = false;
         }, self.waitingTime)
     };
