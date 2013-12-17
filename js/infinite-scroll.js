@@ -65,7 +65,7 @@ var TableScroller = function (cols, rows) {
             DOM.tableWrapper.removeEventListener('scroll');
             DOM.tableWrapper.addEventListener('scroll', function () {
                 self.scroll();
-            }
+            });
         }
     };
 
