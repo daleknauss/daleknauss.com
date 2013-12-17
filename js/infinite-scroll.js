@@ -81,7 +81,7 @@ var TableScroller = function (cols, rows) {
     };
 
     this.scroll = function () {
-        var self.scrolling = true;
+        self.scrolling = true;
         self.scrollTop = DOM.tableWrapper.scrollTop;
 
         if (self.previousTop === self.scrollTop) return;
