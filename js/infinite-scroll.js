@@ -246,7 +246,7 @@ var TableScroller = function (cols, rows) {
             console.error('reusableTbodies is empty, can not reuse');
         }
         
-        console.log('reuseableTbodies', this.reuseableTbodies, this.reuseableTbodies.length);
+        console.log('reuseableTbodies', this.reuseableTbodies.join(''), this.reuseableTbodies.length);
         var tbody = this.reuseableTbodies.shift();
         console.log(tbody, typeof tbody)
         
