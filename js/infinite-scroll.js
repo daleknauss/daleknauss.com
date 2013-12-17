@@ -50,13 +50,9 @@ var TableScroller = function (cols, rows) {
     };
 
     this.createScrollEvent = function () {
-        var isTouchDevice = this.isOnTouchDevice();
-        var onEnd = isTouchDevice ? 'touchend' : 'scroll';
-        self.waitingTime = isTouchDevice ? 500 : 0;
 
-        DOM.tableWrapper.removeEventListener(onEnd);
-        DOM.tableWrapper.addEventListener(onEnd, function (e) {
-            if (self.isOnTouchDevice()) {
+        if (self.isOnTouchDevice()) {
+            DOM.tableWrapper.addEventListener('touchend', function () {
                 if (self.waitingToScroll) {
                     clearTimeout(self.scrollTimeout);
                     self.startScroll();
@@ -64,17 +60,20 @@ var TableScroller = function (cols, rows) {
                     self.startScroll();
                     self.waitingToScroll = true;
                 }
-            } else {
-                self.scroll(e);
+            });
+        } else {
+            DOM.tableWrapper.removeEventListener('scroll');
+            DOM.tableWrapper.addEventListener('scroll', function () {
+                self.scroll();
             }
-        });
+        }
     };
 
     this.startScroll = function () {
         self.scrollTimeout = setTimeout(function () {
             self.scroll();
             self.waitingToScroll = false;
-        }, self.waitingTime)
+        }, 500)
     };
 
     this.scroll = function () {
