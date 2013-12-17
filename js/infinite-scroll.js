@@ -6,7 +6,7 @@ var TableScroller = function (cols, rows) {
     this.maxPageBuffer = 3;
     this.rows = rows;
     this.columns = cols;
-    this.pageSize = 100;
+    this.pageSize = 1000;
     this.previousTop = 0;
     this.rowCount = this.rows.length;
     this.colCount = this.columns.length;
@@ -38,11 +38,6 @@ var TableScroller = function (cols, rows) {
         // this.bind(2);
         // this.bind(3);
         //set virtual scroll area
-        document.body.addEventListener('touchmove',function(e){
-            if (self.scrolling) {
-                e.preventDefault();
-            }
-        }, false); 
 
         DOM.scrollY.style.height = (this.rows.length * rowHeight) + 'px';
 
@@ -51,7 +46,7 @@ var TableScroller = function (cols, rows) {
         // }, 100)
 
 
-        this.createScrollEvent();
+        // this.createScrollEvent();
 
     };
 
