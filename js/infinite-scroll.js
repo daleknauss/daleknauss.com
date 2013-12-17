@@ -52,34 +52,32 @@ var TableScroller = function (cols, rows) {
     this.createScrollEvent = function () {
         var isTouchDevice = this.isOnTouchDevice();
         var onEnd = isTouchDevice ? 'touchend' : 'scroll';
-        var waitingTime = isTouchDevice ? 500 : 0;
+        var self.waitingTime = isTouchDevice ? 500 : 0;
 
         DOM.tableWrapper.removeEventListener(onEnd);
         DOM.tableWrapper.addEventListener(onEnd, function (e) {
             if (self.isOnTouchDevice()) {
-                console.log("isTouchDevice", self.waitingToScroll)
                 if (self.waitingToScroll) {
                     clearTimeout(self.scrollTimeout);
-                    self.startScroll(e, waitingTime);
+                    self.startScroll();
                 } else {
-                    self.startScroll(e, waitingTime);
+                    self.startScroll();
                     self.waitingToScroll = true;
                 }
             } else {
-                console.log("not touch")
                 self.scroll(e);
             }
         });
     };
 
-    this.startScroll = function (e, waitingTime) {
+    this.startScroll = function () {
         self.scrollTimeout = setTimeout(function () {
             self.scroll(e);
             self.waitingToScroll = false;
-        }, waitingTime)
+        }, self.waitingTime)
     };
 
-    this.scroll = function (e) {
+    this.scroll = function () {
 
         var scrollTop = DOM.tableWrapper.scrollTop;
 
