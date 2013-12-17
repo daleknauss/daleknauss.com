@@ -38,6 +38,8 @@ var TableScroller = function (cols, rows) {
         // this.bind(2);
         // this.bind(3);
         //set virtual scroll area
+        document.body.addEventListener('touchmove',function(event){event.preventDefault();},false); 
+
         DOM.scrollY.style.height = (this.rows.length * rowHeight) + 'px';
 
         // setInterval(function () {
