@@ -234,11 +234,12 @@ var TableScroller = function (cols, rows) {
             tbody = this.createNewTbody(page);
         }
 
-        console.log(tbody);
+        // console.log(tbody);
         return tbody;
     };
 
     this.reuseTbody = function (page) {
+        debugger;
         if(this.reuseableTbodies.length < 1) {
             console.error('reusableTbodies is empty, can not reuse');
         }
