@@ -234,6 +234,7 @@ var TableScroller = function (cols, rows) {
             tbody = this.createNewTbody(page);
         }
 
+        console.log(tbody);
         return tbody;
     };
 
