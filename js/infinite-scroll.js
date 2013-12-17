@@ -99,7 +99,7 @@ var TableScroller = function (cols, rows) {
         }
 
         this.previousTop = self.scrollTop;
-        var self.scrolling = false;
+        self.scrolling = false;
     };
 
     // this.scrollUp = function (scrollTop) {
