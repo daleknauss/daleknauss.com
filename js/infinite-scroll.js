@@ -73,7 +73,7 @@ var TableScroller = function (cols, rows) {
         self.scrollTimeout = setTimeout(function () {
             self.scroll();
             self.waitingToScroll = false;
-        }, 500)
+        }, 1000)
     };
 
     this.scroll = function () {
