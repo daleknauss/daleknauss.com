@@ -6,7 +6,7 @@ var TableScroller = function (cols, rows) {
     this.maxPageBuffer = 3;
     this.rows = rows;
     this.columns = cols;
-    this.pageSize = 300;
+    this.pageSize = 50;
     this.previousTop = 0;
     this.rowCount = this.rows.length;
     this.colCount = this.columns.length;
@@ -81,7 +81,6 @@ var TableScroller = function (cols, rows) {
     };
 
     this.scroll = function () {
-        self.scrolling = true;
         self.scrollTop = DOM.tableWrapper.scrollTop;
 
         if (self.previousTop === self.scrollTop) return;
@@ -99,7 +98,6 @@ var TableScroller = function (cols, rows) {
         }
 
         this.previousTop = self.scrollTop;
-        self.scrolling = false;
     };
 
     // this.scrollUp = function (scrollTop) {
