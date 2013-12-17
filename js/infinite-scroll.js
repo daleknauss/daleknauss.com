@@ -88,7 +88,7 @@ var TableScroller = function (cols, rows) {
 
         self.setCurrentPage(scrollTop)
 
-        self.detectBigScroll(scrollTop);
+        // self.detectBigScroll(scrollTop);
 
         if (downScroll) {
             self.append();
@@ -229,7 +229,7 @@ var TableScroller = function (cols, rows) {
     this.createTbody = function (page) {
         var tbody;
 
-        if (this.reuseableTbodies.length > 1) {
+        if (this.reuseableTbodies.length > 0) {
             tbody = this.reuseTbody(page);
         } else {
             tbody = this.createNewTbody(page);
