@@ -38,7 +38,11 @@ var TableScroller = function (cols, rows) {
         // this.bind(2);
         // this.bind(3);
         //set virtual scroll area
-        document.body.addEventListener('touchmove',function(event){event.preventDefault();},false); 
+        document.body.addEventListener('touchmove',function(e){
+            if (self.waitingCount > 3) {
+                e.preventDefault();
+            }
+        }, false); 
 
         DOM.scrollY.style.height = (this.rows.length * rowHeight) + 'px';
 
@@ -56,18 +60,18 @@ var TableScroller = function (cols, rows) {
         if (self.isOnTouchDevice()) {
             DOM.tableWrapper.addEventListener('touchend', function () {
                 if (self.waitingToScroll) {
+                    self.waitingCount += 1;
                     clearTimeout(self.scrollTimeout);
                     self.startScroll();
                 } else {
+                    self.waitingCount = 0;
                     self.startScroll();
                     self.waitingToScroll = true;
                 }
             });
         } else {
             DOM.tableWrapper.removeEventListener('scroll');
-            DOM.tableWrapper.addEventListener('scroll', function () {
-                self.scroll();
-            });
+            DOM.tableWrapper.addEventListener('scroll', self.scroll);
         }
     };
 
@@ -75,28 +79,28 @@ var TableScroller = function (cols, rows) {
         self.scrollTimeout = setTimeout(function () {
             self.scroll();
             self.waitingToScroll = false;
-        }, 1000)
+        }, 500)
     };
 
     this.scroll = function () {
 
-        var scrollTop = DOM.tableWrapper.scrollTop;
+        self.scrollTop = DOM.tableWrapper.scrollTop;
 
-        if (self.previousTop === scrollTop) return;
+        if (self.previousTop === self.scrollTop) return;
 
-        var downScroll = this.previousTop < scrollTop;
+        self.downScroll = this.previousTop < self.scrollTop;
 
-        self.setCurrentPage(scrollTop)
+        self.setCurrentPage(self.scrollTop)
 
-        self.detectBigScroll(scrollTop);
+        self.detectBigScroll(self.scrollTop);
 
-        if (downScroll) {
+        if (self.downScroll) {
             self.append();
         } else {
             self.prepend();
         }
 
-        this.previousTop = scrollTop;
+        this.previousTop = self.scrollTop;
     };
 
     // this.scrollUp = function (scrollTop) {
