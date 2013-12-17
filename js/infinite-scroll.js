@@ -50,23 +50,28 @@ var TableScroller = function (cols, rows) {
     };
 
     this.createScrollEvent = function () {
+        var onEnd = self.isOnTouchDevice() ? 'touchend' : 'scroll';
 
-        if (self.isOnTouchDevice()) {
-            DOM.tableWrapper.addEventListener('touchend', function () {
-                if (self.waitingToScroll) {
-                    clearTimeout(self.scrollTimeout);
-                    self.startScroll();
-                } else {
-                    self.startScroll();
-                    self.waitingToScroll = true;
-                }
-            });
-        } else {
-            DOM.tableWrapper.removeEventListener('scroll');
-            DOM.tableWrapper.addEventListener('scroll', function () {
-                self.scroll();
-            });
-        }
+        DOM.tableWrapper.addEventListener(onEnd, function () {
+            self.scroll();
+        });
+
+        // if (self.isOnTouchDevice()) {
+        //     DOM.tableWrapper.addEventListener('touchend', function () {
+        //         if (self.waitingToScroll) {
+        //             clearTimeout(self.scrollTimeout);
+        //             self.startScroll();
+        //         } else {
+        //             self.startScroll();
+        //             self.waitingToScroll = true;
+        //         }
+        //     });
+        // } else {
+        //     DOM.tableWrapper.removeEventListener('scroll');
+            // DOM.tableWrapper.addEventListener('scroll', function () {
+            //     self.scroll();
+            // });
+        // }
     };
 
     this.startScroll = function () {
