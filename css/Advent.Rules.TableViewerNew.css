@@ -55,7 +55,7 @@
         border-bottom:          2px solid #e7e9e9;
 /*      background:             url(../../icons/td-bg20x20.gif);    
         background:             url(resources/icons/td-bg40x20.gif);*/
-        background-repeat:      repeat-x;
+        /*background-repeat:      repeat-x;*/
         /*  -webkit-linear-gradient(90deg, #fff 0%, #fff 60.01%, #edeff1 100%);
             -webkit-box-shadow:     0 2px 0 #fff, inset 0 -2px 0 #e7e9e9;*/
         height:                 38px;
