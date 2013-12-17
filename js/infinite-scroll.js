@@ -6,7 +6,7 @@ var TableScroller = function (cols, rows) {
     this.maxPageBuffer = 3;
     this.rows = rows;
     this.columns = cols;
-    this.pageSize = 1000;
+    this.pageSize = 200;
     this.previousTop = 0;
     this.rowCount = this.rows.length;
     this.colCount = this.columns.length;
@@ -46,7 +46,7 @@ var TableScroller = function (cols, rows) {
         // }, 100)
 
 
-        // this.createScrollEvent();
+        this.createScrollEvent();
 
     };
 
