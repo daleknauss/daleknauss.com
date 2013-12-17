@@ -66,6 +66,7 @@ var TableScroller = function (cols, rows) {
                     self.waitingToScroll = true;
                 }
             } else {
+                console.log("not touch")
                 self.scroll(e);
             }
         });
@@ -149,7 +150,6 @@ var TableScroller = function (cols, rows) {
     };
 
     this.addReuseableTbody = function (tbody) {
-        console.log("Reuse", tbody);
         if (typeof tbody === "object") {
             this.reuseableTbodies.push(tbody);
         }
@@ -241,14 +241,11 @@ var TableScroller = function (cols, rows) {
 
     this.reuseTbody = function (page) {
         // debugger;
-        console.log("Reuse", page);
         if(this.reuseableTbodies.length < 1) {
             console.error('reusableTbodies is empty, can not reuse');
         }
         
-        console.log('reuseableTbodies', this.reuseableTbodies.join(''), this.reuseableTbodies.length);
         var tbody = this.reuseableTbodies.shift();
-        console.log(tbody, typeof tbody)
         
         if (typeof tbody === 'undefined') {
             console.error('tbody is undefined', this.reuseableTbodies.length);
