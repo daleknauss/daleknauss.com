@@ -140,8 +140,11 @@ var TableScroller = function (cols, rows) {
         var DOMPage;
         while (this.visibleBuffer.length > 0) {
             DOMPage = By.id('page_' + this.visibleBuffer.shift());
-            this.addReuseableTbody(DOMPage);
-            DOM.table.removeChild(DOMPage);
+            if (DOMPage) {
+                this.addReuseableTbody(DOMPage);
+                DOM.table.removeChild(DOMPage);
+                
+            }
         }
     };
 
