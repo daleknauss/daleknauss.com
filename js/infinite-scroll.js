@@ -39,7 +39,7 @@ var TableScroller = function (cols, rows) {
         // this.bind(3);
         //set virtual scroll area
         document.body.addEventListener('touchmove',function(e){
-            if (self.waitingCount >= 2) {
+            if (self.scrolling) {
                 e.preventDefault();
             }
         }, false); 
@@ -60,11 +60,9 @@ var TableScroller = function (cols, rows) {
         if (self.isOnTouchDevice()) {
             DOM.tableWrapper.addEventListener('touchend', function () {
                 if (self.waitingToScroll) {
-                    self.waitingCount += 1;
                     clearTimeout(self.scrollTimeout);
                     self.startScroll();
                 } else {
-                    self.waitingCount = 0;
                     self.startScroll();
                     self.waitingToScroll = true;
                 }
@@ -83,7 +81,7 @@ var TableScroller = function (cols, rows) {
     };
 
     this.scroll = function () {
-
+        var self.scrolling = true;
         self.scrollTop = DOM.tableWrapper.scrollTop;
 
         if (self.previousTop === self.scrollTop) return;
@@ -101,6 +99,7 @@ var TableScroller = function (cols, rows) {
         }
 
         this.previousTop = self.scrollTop;
+        var self.scrolling = false;
     };
 
     // this.scrollUp = function (scrollTop) {
