@@ -1,5 +1,5 @@
 var TableCreator = function () {
-	this.noRows = 2000;
+	this.noRows = 10000;
 	var self = this;
 
     this.columnSettings = [

@@ -1,15 +1,15 @@
 ﻿/* ===========================
     TableViewer table settings   width:                  100%;
 ============================== */
-    table.TableViewer {
+    .TableViewer {
         border:                 none;    
         width:                  100%;
         empty-cells:            show;
     }
 
-    table.TableViewer thead tr th {         
+    .TableViewer thead th {         
         border:                 none;
-        -webkit-box-shadow:     inset 0 -2px 0 rgba(0,0,0,.12);
+/*      -webkit-box-shadow:     inset 0 -2px 0 rgba(0,0,0,.12);*/
         background-color:       #f5f7f9; 
         /*background-image:       -webkit-linear-gradient(90deg, rgba(0,0,0,.03) 39.99%,
                                     rgba(0,0,0,.05) 60.01%, rgba(0,0,0,.09) 100%);*/
@@ -24,7 +24,7 @@
         text-overflow:          ellipsis;    
     }
         
-    table.TableViewer {
+    .TableViewer {
         /* font-size:              13px;          font-family:          'Arial', sans-serif;                */
         overflow:               hidden;
         border-spacing:         0;
@@ -36,7 +36,9 @@
             data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAqCAIAAAD9HKYrAAAAG0lEQVQImWN4/vIlEwMDA8P///+ZGBgYBisGALaXBgcjLRwjAAAAAElFTkSuQmCC
         ) repeat; */
     }
-    table.TableViewer thead tr th, table.TableViewer tfoot tr th {
+    
+    .TableViewer thead th, 
+    .TableViewer tfoot th {
         border:                 none;
         color:                  #5c6573;
         overflow:               hidden;
@@ -45,17 +47,18 @@
         border-bottom:          1px solid #cccccc;
     }
     
-    table.TableViewer tbody {
+    .TableViewer tbody {
         overflow:               hidden;
     }
-    table.TableViewer tbody tr td {
+    
+    .TableViewer tbody td {
         -moz-hyphens:           auto;
         hyphens:                auto;
         white-space:            normal;
         border-bottom:          2px solid #e7e9e9;
 /*      background:             url(../../icons/td-bg20x20.gif);    
         background:             url(resources/icons/td-bg40x20.gif);*/
-        /*background-repeat:      repeat-x;*/
+/*        background-repeat:      repeat-x;*/
         /*  -webkit-linear-gradient(90deg, #fff 0%, #fff 60.01%, #edeff1 100%);
             -webkit-box-shadow:     0 2px 0 #fff, inset 0 -2px 0 #e7e9e9;*/
         height:                 38px;
@@ -74,22 +77,25 @@
     }
 
     /*Give us some space, and mark first item*/
-    table.TableViewer tbody tr td:first-child, 
-    table.TableViewer thead tr th:first-child,
-    table.TableViewer tfoot tr th:first-child  {
+    .TableViewer tbody tr td:first-child, 
+    .TableViewer thead tr th:first-child,
+    .TableViewer tfoot tr th:first-child  {
         padding-left:           15px;       
         width:                  auto;
     }
-    table.TableViewer tbody tr th:first-child {
+    
+    .TableViewer tbody tr th:first-child {
         text-transform:         uppercase;
         font-weight:            bold;
 
     }
-    table.TableViewer tbody tr:nth-child(even) td {
-        /*background-color:       #edeff1;*/
+    
+    .TableViewer tbody tr:nth-child(even) td {
+        background-color:       #edeff1;
     }
-    /* Sortable header*/
-    table.TableViewer thead tr th span {
+    
+    /* Sortable header  ## not in use */
+/*  .TableViewer thead th span {
         
         padding:                .5em .6em .4em .6em;
         line-height:            24px;
@@ -100,30 +106,34 @@
         border:                 0px solid blue;     
         background-position:    right center; 
         background-repeat:      no-repeat;
-        white-space:            nowrap;     /*deal with overflow textresizing*/
+        white-space:            nowrap;     deal with overflow textresizing
         overflow:               hidden;
         -ms-text-overflow:      ellipsis;
         text-overflow:          ellipsis;
         height:                 100%;
-        /*min-height:             12px;        IE fix; dependant th height */
+        min-height:             12px;        IE fix; dependant th height 
         display:                block;
     }
         
-    table.TableViewer thead tr th span:hover {
-        /*background-image:     url(../img/icon_sort_up.png);*/
+    .TableViewer thead th span:hover {
+        background-image:       url(../img/icon_sort_up.png);
         cursor:                 pointer;
     }
-    table.TableViewer thead tr th span.sortUp {
+    
+    .TableViewer thead th .sortUp {
         background-image:       url(../../icons/icon_sort_up.png);
     }
-    table.TableViewer thead tr th span.sortDown {
+    
+    .TableViewer thead th .sortDown {
         background-image:       url(../../icons/icon_sort_down.png);
     }
-    .TableViewer thead tr.header th a:visited {
+    */
+    .TableViewer thead .header th a:visited {
         color:                  #2e2e2e;
     }
 
-    table.TableViewer thead tr th, table.TableViewer tfoot tr th {
+    .TableViewer thead th,
+    .TableViewer tfoot th {
         height:                 38px;
     }
 
@@ -202,8 +212,7 @@
             width:                  1px;
             height:                 1000px;
             visibility:             hidden;
-            float:                  left;
-            background-color:       Green;           
+            float:                  left;        
         }
         #virtualBufferY {
             visibility:             hidden;
@@ -217,15 +226,21 @@
 
 
         /*Set columwidth on CSS*/
-        table.TableViewer thead tr th, table.TableViewer tfoot tr th {
+        .TableViewer thead th, 
+        .TableViewer tfoot th {
             height:                 35px;
         }
-        table.TableViewer tbody tr td, table.TableViewer thead tr th {
+        
+        .TableViewer tbody td, 
+        .TableViewer thead th {
             width:                  150px;
         }
-        table.TableViewer tbody tr td:nth-child(4), table.TableViewer thead tr th:nth-child(4) {
+        
+        .TableViewer tbody td:nth-child(4), 
+        .TableViewer thead th:nth-child(4) {
             width:                  300px;
         }
-        table.TableViewer tbody tr td:first-child , table.TableViewer thead tr th:first-child {
+        .TableViewer tbody td:first-child , 
+        .TableViewer thead th:first-child {
             width:                  auto;
         }
