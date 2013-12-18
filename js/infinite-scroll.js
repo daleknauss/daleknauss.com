@@ -13,6 +13,7 @@ var TableScroller = function (cols, rows) {
     this.waitingToScroll = false;
     this.scrollTimeout = null;
     this.reuseableTbodies = [];
+    this.myScroll = null;
     
     //private variables
     var self = this,
@@ -53,6 +54,7 @@ var TableScroller = function (cols, rows) {
     this.createScrollEvent = function () {
 
         if (self.isOnTouchDevice()) {
+            this.myScroll = new iScroll('virtualScrollY');
             DOM.tableWrapper.addEventListener('touchend', function () {
                 if (self.waitingToScroll) {
                     clearTimeout(self.scrollTimeout);
