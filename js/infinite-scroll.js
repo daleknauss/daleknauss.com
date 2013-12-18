@@ -54,7 +54,7 @@ var TableScroller = function (cols, rows) {
     this.createScrollEvent = function () {
 
         if (self.isOnTouchDevice()) {
-            this.myScroll = new iScroll('virtualScrollY');
+            this.myScroll = new IScroll('virtualScrollY', { hScrollbar: false });
             DOM.tableWrapper.addEventListener('touchend', function () {
                 if (self.waitingToScroll) {
                     clearTimeout(self.scrollTimeout);
