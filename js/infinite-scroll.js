@@ -14,6 +14,9 @@ var TableScroller = function (cols, rows) {
     this.scrollTimeout = null;
     this.reuseableTbodies = [];
     this.myScroll = null;
+    this.offset = 0;
+    this.realTop = 0;
+    this.oldY = 0;
     
     //private variables
     var self = this,
@@ -33,14 +36,14 @@ var TableScroller = function (cols, rows) {
         //add reference to dom elements
         DOM.tableWrapper = By.id('tableBody');
         DOM.table = By.id('mainTable');
-        DOM.scrollY = By.id('virtualScrollY');
+        // DOM.scrollY = By.id('virtualScrollY');
 
         this.bind(1);
         // this.bind(2);
         // this.bind(3);
         //set virtual scroll area
 
-        DOM.scrollY.style.height = (this.rows.length * rowHeight) + 'px';
+        // DOM.scrollY.style.height = (this.rows.length * rowHeight) + 'px';
 
         // setInterval(function () {
         //    self.scroll(); 
@@ -48,66 +51,58 @@ var TableScroller = function (cols, rows) {
 
 
         this.createScrollEvent();
-
+        var loadScroll = function () { 
+            if (self.isOnTouchDevice()) {
+                self.myScroll = new IScroll('#tableBody', { 
+                    customMaxScrollX: self.rows.length * self.getRowHeight()
+                });
+                self.myScroll.on('scrollEnd', function () { 
+                    // debugger;
+                    self.scroll();
+                })
+                self.myScroll.on('scrollStart', function () { console.log("scrollStart") })
+            }
+        }
+        window.addEventListener('load', loadScroll, false);
     };
 
     this.createScrollEvent = function () {
 
         if (self.isOnTouchDevice()) {
-            this.myScroll = new IScroll('virtualScrollY', { hScrollbar: false });
-            DOM.tableWrapper.addEventListener('touchend', function () {
-                if (self.waitingToScroll) {
-                    clearTimeout(self.scrollTimeout);
-                    self.startScroll();
-                } else {
-                    self.startScroll();
-                    self.waitingToScroll = true;
-                }
-            });
+            // DOM.tableWrapper.addEventListener('touchend', function () {
+            //     console.log("Called")
+            //     if (self.waitingToScroll) {
+            //         clearTimeout(self.scrollTimeout);
+            //         self.startScroll();
+            //     } else {
+            //         self.startScroll();
+            //         self.waitingToScroll = true;
+            //     }
+            // });
         } else {
             DOM.tableWrapper.removeEventListener('scroll');
             DOM.tableWrapper.addEventListener('scroll', self.scroll);
         }
     };
 
-    this.startScroll = function () {
-        self.scrollTimeout = setTimeout(function () {
-            self.scroll();
-            self.waitingToScroll = false;
-        }, 300)
-    };
+    // this.startScroll = function () {
+    //     self.scrollTimeout = setTimeout(function () {
+    //         self.scroll();
+    //         self.waitingToScroll = false;
+    //     }, 300)
+    // };
 
     this.scroll = function () {
-        self.scrollTop = DOM.tableWrapper.scrollTop;
+        console.log("y: " + this.myScroll.y + " realY: " + this.myScroll.realY);
+        var newY = Math.abs(this.myScroll.y + this.myScroll.realY);
 
-        if (self.previousTop === self.scrollTop) return;
+        self.setCurrentPage(newY)
 
-        self.downScroll = this.previousTop < self.scrollTop;
+        self.detectBigScroll(newY);
 
-        self.setCurrentPage(self.scrollTop)
-
-        self.detectBigScroll(self.scrollTop);
-
-        if (self.downScroll) {
-            self.append();
-        } else {
-            self.prepend();
-        }
-
-        this.previousTop = self.scrollTop;
+        this.myScroll.directionY >= 0 ? self.append() : self.prepend();
     };
 
-    // this.scrollUp = function (scrollTop) {
-    //     if (self.currentPage > 1 || !self.pageNotInBuffer(1)) {
-    //         self.prepend();
-    //     } else if (scrollTop <= 0) {
-    //         self.adjustForPage(1);
-    //     }
-    // };
-
-    // this.scrollDown = function () {
-    //     self.append();
-    // };
 
     this.removePage = function (pageIndex) {
         if (!pageIndex) return;
@@ -152,9 +147,9 @@ var TableScroller = function (cols, rows) {
         }
     };
 
-    this.append = function () {
+    this.append = function (page) {
         var pageIndexToRemove = self.visibleBuffer[0],
-            newPage = self.currentPage + 1,
+            newPage = page || self.currentPage + 1,
             bufferFull = this.visibleBufferFull();
 
         if (!self.pageNotInBuffer(newPage)) return;
@@ -192,7 +187,6 @@ var TableScroller = function (cols, rows) {
             if (self.visibleBuffer[0] !== newPage) { //if we don't have the first page in buffer already
 
                 if (bufferFull) {
-                    //do some housekeeping                        
                     this.removePage(pageIndexToRemove);
                 }
 
@@ -205,12 +199,13 @@ var TableScroller = function (cols, rows) {
     };
 
     this.bind = function (page, append) {
-        if (page > self.pageBuffer.length) return false;
-        if (append === void 0) append = true;
+        if (page > self.pageBuffer.length) return false; // is page number higher than maximum
+        if (append === void 0) append = true; // append by default
 
         var tbody = this.createTbody(page);
 
         var pageNotInBuffer = this.pageNotInBuffer(page)
+
         if (append) {
             DOM.table.appendChild(tbody); //update dom
             if (pageNotInBuffer) self.visibleBuffer.push(page);
@@ -218,9 +213,7 @@ var TableScroller = function (cols, rows) {
             DOM.table.insertBefore(tbody, DOM.table.childNodes[0]); //update dom
             if (pageNotInBuffer) self.visibleBuffer.unshift(page);
         }
-
-        //now that we have rendered, find out rowheight  
-        self.rowHeight = this.getRowHeight();
+            if (self.myScroll) self.myScroll.refresh();
     };
 
     this.createTbody = function (page) {
@@ -232,12 +225,10 @@ var TableScroller = function (cols, rows) {
             tbody = this.createNewTbody(page);
         }
 
-        // console.log(tbody);
         return tbody;
     };
 
     this.reuseTbody = function (page) {
-        // debugger;
         if(this.reuseableTbodies.length < 1) {
             console.error('reusableTbodies is empty, can not reuse');
         }
@@ -249,12 +240,17 @@ var TableScroller = function (cols, rows) {
         }
         
         var rowsToCreate = this.pageBuffer[page - 1].length;
+        if (rowsToCreate < 200) {
+            console.log("Too few rows!!!")
+        }
+
         var i, y, row, rowData, cell, fieldTag;
         tbody.id = "page_" + page;
 
         for (i = 0; i < rowsToCreate; i++) {
             row = tbody.children[i];
-            row.id = "row_" + page + (i + 1);
+            var startId = page == 1 ? 0 : (page - 1) * 200;
+            row.id = "row_" + (startId + (i + 1)) ;
             rowData = self.pageBuffer[page - 1][i];
 
             for (y = 0; y < this.colCount; y++) {
@@ -281,7 +277,8 @@ var TableScroller = function (cols, rows) {
     };
 
     this.createRow = function (page, i) {
-        var row = this.DOM_Factory('tr', 'row_' + page + (i + 1));
+        var startId = page == 1 ? 0 : (page - 1) * 200;
+        var row = this.DOM_Factory('tr', 'row_' + (startId + (i + 1)));
             row.classList.add('bodyRow');
 
         for (var y = 0; y < this.colCount; y++) {
@@ -349,39 +346,24 @@ var TableScroller = function (cols, rows) {
         return this.pageSize * this.getRowHeight();
     };
 
-    this.detectOffset = function () {
-        var sTop = -1,
-            prevBody = By.id('page_' + self.currentPage),
-            offsetHeight = this.getRowHeight(),
-            scrollTop = DOM.tableWrapper.scrollTop; 
-
-        sTop = scrollTop - offsetHeight * (self.currentPage - 1);
-
-        if (sTop / self.rowHeight > self.pageSize) { //if we the pages has drifted for some reason, readjust page
-            self.setCurrentPage(scrollTop)
-            // this.logger('Offset exception! Readjusting page ' + self.page);
-            self.adjustForPage(self.currentPage);
-        }
-    };
-
     this.getCurrentPage = function (scrollTop) {
         return Math.abs(Math.floor(scrollTop / self.getPageHeight())) + 1;
     };
 
     this.setCurrentPage = function (scrollTop) {
         self.currentPage = self.getCurrentPage(scrollTop);
+        console.log("Page" + self.currentPage);
     };
 
     this.changeTableTop = function (top) {
-        DOM.table.style.top = top + 'px';
+        // DOM.table.style.top = top + 'px';
     };
 
     this.DOM_Factory = function (tag, id) {
         var tag = tag || 'div',
             el = document.createElement(tag);
 
-        // if (!el || el instanceof HTMLUnknownElement) { throw 'Tag ' + tag + ' could not be created'; }
-        if (id) { el.id = id; }
+        if (id) el.id = id;
         return el;
     };
 

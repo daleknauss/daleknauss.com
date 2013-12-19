@@ -52,7 +52,7 @@ var utils = (function () {
 			speed = Math.abs(distance) / time,
 			destination,
 			duration,
-			deceleration = 0.0006;
+			deceleration = 0.007;
 
 		destination = current + ( speed * speed ) / ( 2 * deceleration ) * ( distance < 0 ? -1 : 1 );
 		duration = speed / deceleration;
@@ -295,6 +295,7 @@ function IScroll (el, options) {
 	// Some defaults	
 	this.x = 0;
 	this.y = 0;
+	this.realY = 0;
 	this.directionX = 0;
 	this.directionY = 0;
 	this._events = {};
@@ -582,9 +583,13 @@ IScroll.prototype = {
 		}
 
 		if ( !this.hasVerticalScroll || this.y > 0 ) {
+			this.realY += this.y;
 			y = 0;
 		} else if ( this.y < this.maxScrollY ) {
+			debugger;
+			this.realY += this.y - this.maxScrollY;
 			y = this.maxScrollY;
+			console.log(this.realY)
 		}
 
 		if ( x == this.x && y == this.y ) {

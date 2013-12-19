@@ -6,8 +6,6 @@
     <script src="js/knockout.min.js"></script>
     <script src="js/iscroll.js"></script>              
     <script src="js/By.Selector.js"></script>  
-    <script src="js/infinite-scroll.js"></script>
-    <script src="js/table-creator.js"></script>
     <link href="css/Advent.Rules.TableViewerNew.css" rel="stylesheet" />
 </head>
 <body>
@@ -25,10 +23,11 @@
             </table>
         </div>
         <div id="tableBody" class="advsScroll">  
-            <table class="TableViewer" id="mainTable" style="width:100%">
-            </table>
+            <table class="TableViewer" id="mainTable" style="width:100%"></table>
             <div id="virtualScrollY"></div>
         </div>
     </section>  
+    <script src="js/infinite-scroll.js"></script>
+    <script src="js/table-creator.js"></script>
 </body>
 </html>
