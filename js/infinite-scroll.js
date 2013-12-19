@@ -165,10 +165,10 @@ var TableScroller = function (cols, rows) {
         if (this.inRange() && self.pageBuffer[pageIndexToRemove]) { //within range
 
             if (bufferFull) {
-                // this.removePage(pageIndexToRemove);
+                this.removePage(pageIndexToRemove);
 
                 //adjust top position since we lost the height of height of the removed els                
-                // this.changeTableTop(Math.abs(DOM.table.offsetTop) + this.getPageHeight());
+                this.changeTableTop(Math.abs(DOM.table.offsetTop) + this.getPageHeight());
             }
 
             if (this.pageNotInBuffer(newPage)) {
@@ -196,7 +196,7 @@ var TableScroller = function (cols, rows) {
 
                 if (bufferFull) {
                     //do some housekeeping                        
-                    // this.removePage(pageIndexToRemove);
+                    this.removePage(pageIndexToRemove);
                 }
 
                 self.bind(newPage, false);
