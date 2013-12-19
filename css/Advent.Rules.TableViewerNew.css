@@ -178,7 +178,7 @@
         .advsScroll {       
             overflow-y:             auto; 
             overflow-x:             auto;
-            /*-webkit-overflow-scrolling: touch;*/
+            -webkit-overflow-scrolling: touch;
             /*Accelerated compositing
                 -webkit-transform:      translate3d(0,0,0);
             */
