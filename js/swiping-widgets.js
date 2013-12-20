@@ -28,19 +28,21 @@ var WidgetSlider = function () {
 	};
 
 	this.moveSlide = function (swiper) {
-		var activeIndex = swiper.activeIndex;
-		var previousIndex = swiper.previousIndex
+        setTimeout(function () {
+            var activeIndex = swiper.activeIndex;
+            var previousIndex = swiper.previousIndex
 
-		if  (activeIndex === previousIndex) {
-            return;
-        } else if (activeIndex > previousIndex) {
-			self.appendWidget(activeIndex + 1);
-			self.removeWidget(previousIndex - 1);
-		} else {
-			self.prependWidget(activeIndex - 1);
-			self.removeWidget(previousIndex + 1);
-		}
-	};
+            if  (activeIndex === previousIndex) {
+                return;
+            } else if (activeIndex > previousIndex) {
+                self.appendWidget(activeIndex + 1);
+                self.removeWidget(previousIndex - 1);
+            } else {
+                self.prependWidget(activeIndex - 1);
+                self.removeWidget(previousIndex + 1);
+            }
+        }, 100)
+    };
 
 
 	this.appendWidget = function (index) {
