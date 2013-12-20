@@ -1,7 +1,3 @@
-$(function(){
-  new WidgetSlider();
-})
-
 var WidgetSlider = function () {
 	var self = this;
 	this.swiper = null;
@@ -9,8 +5,9 @@ var WidgetSlider = function () {
 	this.widgets = [];
 	this.activeBuffer = [];
 
-	this.init = function (selector) {
+	this.init = function (selector, startIndex) {
 		selector = (selector && typeof selector === 'string') ? selector : '.swiper-container';
+        startIndex = startIndex ? Number(startIndex) : 0;
 		this.$el = $(selector);
 
 		this.addWidgetPlaceholders();
@@ -19,15 +16,18 @@ var WidgetSlider = function () {
     		mode:'horizontal',
     		keyboardControl: true,
     		grabCursor: true,
+            initialSlide: startIndex,
             speed: 600,
             calculateHeight: true,
     		onSlideChangeStart: this.moveSlide,
             centeredSlides: true
     	});
-        
+
         this.addArrowEvents();
-    	this.appendWidget(0);
-    	this.appendWidget(1);
+
+        this.appendWidget(startIndex - 1);
+        this.appendWidget(startIndex);
+        this.appendWidget(startIndex + 1);
 	};
 
     this.addArrowEvents = function () {
@@ -41,7 +41,6 @@ var WidgetSlider = function () {
     }
 
 	this.moveSlide = function (swiper) {
-        setTimeout(function () {
             var activeIndex = swiper.activeIndex;
             var previousIndex = swiper.previousIndex
 
@@ -54,7 +53,8 @@ var WidgetSlider = function () {
                 self.prependWidget(activeIndex - 1);
                 self.removeWidget(previousIndex + 1);
             }
-        }, 100)
+
+        Utils.replaceQueryParam('widgetId', activeIndex);
     };
 
 
@@ -99,7 +99,6 @@ var WidgetSlider = function () {
 	this.addWidgetPlaceholders = function () {
 		var wrapper = $('<div>').addClass('swiper-wrapper');
 		var types = ['grid', 'barChart', 'pieChart', 'grid', 'barChart', 'pieChart', 'grid', 'barChart', 'pieChart'];
-        // var types = ['grid','grid','grid','grid','grid','grid']
 		for (var i = 0; i < 9; i++) {
 			var type = types[i];
 			var placeholder = $('<div>').addClass('swiper-slide')
@@ -114,8 +113,6 @@ var WidgetSlider = function () {
 		}
 		this.$el.append(wrapper);
 	};
-
-	this.init();
 };
 
 var dataSource = {
@@ -326,3 +323,50 @@ var Widget = function () {
 	};
 
 };
+Utils = {
+    replaceQueryParam: function (key, value) {
+        // var oldSearch = window.location.search;
+        // var currentQuery = oldSearch ? oldSearch + '&' : '?';
+        // currentQuery += key + '=' + value;
+        var params = this.getQueryParams();
+        params[key] = value;
+        var newQuery = '';
+        for (param in params) {
+            newQuery += '&' + param + '=' + params[param];
+        }
+        
+        history.pushState({}, "", '?' + newQuery.substring(1));
+    },
+    getQueryParams: function () {
+        var query, params;
+
+        query = window.location.search.substring(1);
+
+        params = Utils.parseParams(query);
+
+        return params;
+    },
+
+    parseParams: function (paramString) {
+        var query = paramString,
+            params = query.split('&'),
+            complete = {};
+
+        if (query.length === 0) return complete;
+
+        for (var i = 0; i < params.length; i++) {
+            var pair = params[i].split('=');
+            //not all params have an equal sign
+            complete[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
+        }
+
+        return complete;
+    }
+}
+            
+
+$(function(){
+  var slider = new WidgetSlider();
+  var widgetId = Utils.getQueryParams().widgetId;
+  slider.init('.swiper-container', widgetId);
+});
