@@ -1,5 +1,5 @@
 var TableCreator = function () {
-	this.noRows = 10000;
+	this.noRows = 1000;
 	var self = this;
 
     this.columnSettings = [
@@ -67,4 +67,4 @@ var TableCreator = function () {
 
 };
 
-document.addEventListener('DOMContentLoaded', new TableCreator().init);
+// document.addEventListener('DOMContentLoaded', new TableCreator().init);
