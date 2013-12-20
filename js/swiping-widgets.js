@@ -19,11 +19,12 @@ var WidgetSlider = function () {
     		mode:'horizontal',
     		keyboardControl: true,
     		grabCursor: true,
-    		resistance: '100%',
             speed: 600,
             calculateHeight: true,
-    		onSlideChangeStart: this.moveSlide
+    		onSlideChangeStart: this.moveSlide,
+            centeredSlides: true
     	});
+        
         this.addArrowEvents();
     	this.appendWidget(0);
     	this.appendWidget(1);
@@ -97,13 +98,13 @@ var WidgetSlider = function () {
 
 	this.addWidgetPlaceholders = function () {
 		var wrapper = $('<div>').addClass('swiper-wrapper');
-		var types = ['grid', 'barChart', 'pieChart', 'grid', 'barChart', 'pieChart'];
+		var types = ['grid', 'barChart', 'pieChart', 'grid', 'barChart', 'pieChart', 'grid', 'barChart', 'pieChart'];
         // var types = ['grid','grid','grid','grid','grid','grid']
-		for (var i = 0; i < 6; i++) {
+		for (var i = 0; i < 9; i++) {
 			var type = types[i];
 			var placeholder = $('<div>').addClass('swiper-slide')
 										.addClass(type)
-										.attr('id', 'slide_' + i);
+										.attr('id', 'slide_' + (i+1));
 
 			var widget = new Widget();
 			widget.init(type, placeholder);
