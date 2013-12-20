@@ -157,6 +157,7 @@ var Widget = function () {
 		this.data = this.dataSource.getBarChartData();
 		this.renderFunction = function () {
 			var widget = $('<div>');
+            widget.css('padding', '20px');
         	this.$wrapper.append(widget);
 
 			widget = widget.kendoChart({
@@ -204,6 +205,7 @@ var Widget = function () {
 		this.data = this.dataSource.getPieChartData();
 		this.renderFunction = function () {
 			var widget = $('<div>');
+            widget.css('padding', '20px');
         	this.$wrapper.append(widget);
 
 			widget = widget.kendoChart({
@@ -267,6 +269,7 @@ var Widget = function () {
         
         this.renderFunction = function () {
         	var widget = $('<div>');
+            widget.css('padding', '20px');
         	this.$wrapper.append(widget);
         	widget = widget.kendoGrid({
             	dataSource: {
