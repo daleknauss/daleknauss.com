@@ -21,6 +21,7 @@ var WidgetSlider = function () {
     		grabCursor: true,
     		resistance: '100%',
             speed: 600,
+            calculateHeight: true,
     		onSlideChangeStart: this.moveSlide
     	});
     	this.appendWidget(0);
@@ -270,6 +271,7 @@ var Widget = function () {
         	widget = widget.kendoGrid({
             	dataSource: {
             		data: this.data,
+                    pageSize: 50,
             		schema: {
             			model: {
             				fields: {
@@ -282,10 +284,8 @@ var Widget = function () {
             			}
             		}
             	},
-                pageable: {
-                    refresh: true,
-                    pageSizes: true,
-                    buttonCount: 5
+                scrollable: {
+                    virtual: true
                 },
                 columns: [{
                     field: "Type",
