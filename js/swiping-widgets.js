@@ -20,6 +20,7 @@ var WidgetSlider = function () {
     		keyboardControl: true,
     		grabCursor: true,
     		resistance: '100%',
+            speed: 600,
     		onSlideChangeStart: this.moveSlide
     	});
     	this.appendWidget(0);
@@ -30,7 +31,9 @@ var WidgetSlider = function () {
 		var activeIndex = swiper.activeIndex;
 		var previousIndex = swiper.previousIndex
 
-		if (activeIndex > previousIndex) {
+		if  (activeIndex === previousIndex) {
+            return;
+        } else if (activeIndex > previousIndex) {
 			self.appendWidget(activeIndex + 1);
 			self.removeWidget(previousIndex - 1);
 		} else {
@@ -80,8 +83,8 @@ var WidgetSlider = function () {
 
 	this.addWidgetPlaceholders = function () {
 		var wrapper = $('<div>').addClass('swiper-wrapper');
-		// var types = ['grid', 'barChart', 'pieChart', 'grid', 'barChart', 'pieChart'];
-        var types = ['grid','grid','grid','grid','grid','grid']
+		var types = ['grid', 'barChart', 'pieChart', 'grid', 'barChart', 'pieChart'];
+        // var types = ['grid','grid','grid','grid','grid','grid']
 		for (var i = 0; i < 6; i++) {
 			var type = types[i];
 			var placeholder = $('<div>').addClass('swiper-slide')
