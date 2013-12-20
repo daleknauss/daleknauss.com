@@ -89,7 +89,7 @@ sizes, pagination, etc.
 	/* Specify Swiper's Size: */
 
 	border: 1px solid black;
-	width: 80%;
+	width: 90%;
 	height: 80%;
 }
 .swiper-slide {
@@ -119,4 +119,27 @@ Pagination Styles
 .swiper-visible-switch {
 	/* Specific visible button style: */	
 	
+}
+
+.swipe-left-arrow {
+	width: 0; 
+	height: 0; 
+	border-top: 30px solid transparent;
+	border-bottom: 30px solid transparent;
+	border-right: 30px solid black;
+	position: absolute;
+	top: 50%;
+	left: 20px;
+}
+
+.swipe-right-arrow {
+	width: 0; 
+	height: 0; 
+	border-top: 30px solid transparent;
+	border-bottom: 30px solid transparent;
+	
+	border-left: 30px solid black;
+	position: absolute;
+	top: 50%;
+	right: 20px;
 }

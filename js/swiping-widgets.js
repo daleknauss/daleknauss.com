@@ -24,9 +24,20 @@ var WidgetSlider = function () {
             calculateHeight: true,
     		onSlideChangeStart: this.moveSlide
     	});
+        this.addArrowEvents();
     	this.appendWidget(0);
     	this.appendWidget(1);
 	};
+
+    this.addArrowEvents = function () {
+        $('.swipe-left-arrow').on('click', function () {
+            self.swiper.swipePrev()
+        });
+        $('.swipe-right-arrow').on('click', function () {
+            self.swiper.swipeNext()
+        });
+
+    }
 
 	this.moveSlide = function (swiper) {
         setTimeout(function () {
