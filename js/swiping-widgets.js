@@ -80,7 +80,8 @@ var WidgetSlider = function () {
 
 	this.addWidgetPlaceholders = function () {
 		var wrapper = $('<div>').addClass('swiper-wrapper');
-		var types = ['grid', 'barChart', 'pieChart', 'grid', 'barChart', 'pieChart'];
+		// var types = ['grid', 'barChart', 'pieChart', 'grid', 'barChart', 'pieChart'];
+        var types = ['grid','grid','grid','grid','grid','grid']
 		for (var i = 0; i < 6; i++) {
 			var type = types[i];
 			var placeholder = $('<div>').addClass('swiper-slide')
