@@ -335,7 +335,7 @@ Utils = {
             newQuery += '&' + param + '=' + params[param];
         }
         
-        history.pushState({}, "", '?' + newQuery.substring(1));
+        history.replaceState({}, "", '?' + newQuery.substring(1));
     },
     getQueryParams: function () {
         var query, params;
