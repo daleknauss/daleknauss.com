@@ -130,13 +130,13 @@ var WidgetSlider = function () {
 
 var dataSource = {
 	getGridData: function () {
-		return new TableCreator().generateLargeData();
+		return new TableCreator(1000).generateLargeData();
 	},
 	getPieChartData: function () {
-		return new TableCreator().generateLargeData();
+		return new TableCreator(1000).generateLargeData();
 	},
 	getBarChartData: function () {
-		return new TableCreator().generateLargeData();
+		return new TableCreator(1000).generateLargeData();
 	},
 }
 

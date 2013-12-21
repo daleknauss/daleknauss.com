@@ -25,6 +25,7 @@ var TableScroller = function (cols, rows) {
 
     this.init = function () {
 
+
         this.pageCount = Math.ceil(this.rowCount / this.pageSize);
         var rowHeight = this.getRowHeight();
 
@@ -43,7 +44,7 @@ var TableScroller = function (cols, rows) {
         // this.bind(3);
         //set virtual scroll area
 
-        DOM.table.style.maxHeight = (this.rows.length * rowHeight) + 'px';
+        DOM.table.style.height = (this.rows.length * rowHeight) + 'px';
 
         // setInterval(function () {
         //    self.scroll(); 
@@ -386,3 +387,4 @@ var TableScroller = function (cols, rows) {
 
     this.init();
 };
+document.addEventListener('DOMContentLoaded', new TableCreator().init);
