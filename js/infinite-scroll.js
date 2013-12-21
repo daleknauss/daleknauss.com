@@ -192,10 +192,10 @@ var TableScroller = function (cols, rows) {
                     this.removePage(pageIndexToRemove);
                 }
 
+                self.bind(newPage, false);
+
                 var height = parseInt(DOM.fakeTop.style.height);
                 DOM.fakeTop.style.height = height - this.getPageHeight() + 'px';
-
-                self.bind(newPage, false);
 
                 // if (!bufferFull) self.bind(newPage - 1);
                 // this.changeTableTop(Math.abs(DOM.table.offsetTop) - this.getPageHeight());
