@@ -137,7 +137,6 @@ var TableScroller = function (cols, rows) {
             if (DOMPage) {
                 this.addReuseableTbody(DOMPage);
                 DOM.table.removeChild(DOMPage);
-                
             }
         }
     };
@@ -193,10 +192,13 @@ var TableScroller = function (cols, rows) {
                     this.removePage(pageIndexToRemove);
                 }
 
+                var height = parseInt(DOM.fakeTop.style.height);
+                DOM.fakeTop.style.height = height - this.getPageHeight() + 'px';
+
                 self.bind(newPage, false);
 
                 // if (!bufferFull) self.bind(newPage - 1);
-                this.changeTableTop(Math.abs(DOM.table.offsetTop) - this.getPageHeight());
+                // this.changeTableTop(Math.abs(DOM.table.offsetTop) - this.getPageHeight());
             }
         }
     };
