@@ -17,10 +17,11 @@ var WidgetSlider = function () {
     		keyboardControl: true,
     		grabCursor: true,
             initialSlide: startIndex,
-            speed: 600,
+            speed: 400,
             calculateHeight: true,
-    		onSlideChangeStart: this.moveSlide,
-            centeredSlides: true
+            touchRatio: 0.8,
+            moveStartThreshold: 100,
+    		onSlideChangeStart: this.moveSlide
     	});
 
         this.addArrowEvents();
@@ -296,6 +297,7 @@ var Widget = function () {
             			}
             		}
             	},
+                height: 500,
                 scrollable: {
                     virtual: true
                 },
