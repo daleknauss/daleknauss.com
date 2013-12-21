@@ -5,10 +5,12 @@ var WidgetSlider = function () {
 	this.widgets = [];
 	this.activeBuffer = [];
 
-	this.init = function (selector, startIndex) {
+	this.init = function (selector) {
 		selector = (selector && typeof selector === 'string') ? selector : '.swiper-container';
-        startIndex = startIndex ? Number(startIndex) : 0;
 		this.$el = $(selector);
+        
+        var startIndex = Utils.getQueryParams().widgetId;
+        startIndex = startIndex ? Number(startIndex) : 0;
 
 		this.addWidgetPlaceholders();
 
@@ -98,22 +100,32 @@ var WidgetSlider = function () {
 	};
 
 	this.addWidgetPlaceholders = function () {
-		var wrapper = $('<div>').addClass('swiper-wrapper');
-		var types = ['grid', 'barChart', 'pieChart', 'grid', 'barChart', 'pieChart', 'grid', 'barChart', 'pieChart'];
-		for (var i = 0; i < 9; i++) {
-			var type = types[i];
-			var placeholder = $('<div>').addClass('swiper-slide')
-										.addClass(type)
-										.attr('id', 'slide_' + (i+1));
+		var $container = $('<div>').addClass('swiper-wrapper'),
+		    types = ['grid', 'barChart', 'pieChart', 'grid', 'barChart', 'pieChart', 'grid', 'barChart', 'pieChart'],
+            i, type, $wrapper;
 
-			var widget = new Widget();
-			widget.init(type, placeholder);
-			this.widgets.push(widget);
+		for (i = 0; i < types.length; i++) {
+			type = types[i];
+			$wrapper = this.createWidgetWrapper(type, i+1)
 
-			wrapper.append(placeholder);
+            this.initializeWidget(type, $wrapper)
+			$container.append($wrapper);
 		}
-		this.$el.append(wrapper);
+
+		this.$el.append($container);
 	};
+
+    this.createWidgetWrapper = function (type, index) {
+        return $('<div>').addClass('swiper-slide')
+                         .addClass(type)
+                         .attr('id', 'slide_' + index);
+    };
+
+    this.initializeWidget = function (type, $wrapper) {
+        var widget = new Widget();
+        widget.init(type, $wrapper);
+        this.widgets.push(widget);
+    };
 };
 
 var dataSource = {
@@ -140,6 +152,7 @@ var Widget = function () {
 	this.init = function (type, $wrapper) {
 		this.type = type;
 		this.$wrapper = $wrapper;
+
 		switch (type) {
 		case 'barChart':
 			this.initBarChart();
@@ -151,6 +164,7 @@ var Widget = function () {
 			this.initGrid();
 			break;
 		default:
+            console.error("Type " + type + " does not exist!")
 		}
 	}
 
@@ -165,17 +179,16 @@ var Widget = function () {
 
 	this.initBarChart = function () {
 		this.data = this.dataSource.getBarChartData();
-		this.renderFunction = function () {
-			var widget = $('<div>');
-            widget.css('padding', '20px');
-        	this.$wrapper.append(widget);
+		this.renderFunction = this.renderBarChart;
+	};
 
-			widget = widget.kendoChart({
+    this.renderBarChart = function () {
+        var widget = $('<div>');
+        this.$wrapper.append(widget);
+
+            widget = widget.kendoChart({
                 title: {
-                    text: "Site Visitors Stats /thousands/"
-                },
-                legend: {
-                    visible: false
+                    text: "Site Visitors Stats"
                 },
                 seriesDefaults: {
                     type: "bar"
@@ -189,135 +202,95 @@ var Widget = function () {
                 }],
                 valueAxis: {
                     max: 140000,
-                    line: {
-                        visible: false
-                    },
-                    minorGridLines: {
-                        visible: true
-                    }
                 },
                 categoryAxis: {
                     categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-                    majorGridLines: {
-                        visible: false
-                    }
-                },
-                tooltip: {
-                    visible: true,
-                    template: "#= series.name #: #= value #"
                 }
             });
-			this.kendoWidget = widget.data('kendoChart');
-		}
-	};
+        this.kendoWidget = widget.data('kendoChart');
+    };
 
 	this.initPieChart = function () {
 		this.data = this.dataSource.getPieChartData();
-		this.renderFunction = function () {
-			var widget = $('<div>');
-            widget.css('padding', '20px');
-        	this.$wrapper.append(widget);
-
-			widget = widget.kendoChart({
-                title: {
-                    position: "bottom",
-                    text: "Share of Internet Population Growth, 2007 - 2012"
-                },
-                legend: {
-                    visible: false
-                },
-                chartArea: {
-                    background: ""
-                },
-                seriesDefaults: {
-                    labels: {
-                        visible: true,
-                        background: "transparent",
-                        template: "#= category #: #= value#%"
-                    }
-                },
-                series: [{
-                    type: "pie",
-                    startAngle: 150,
-                    data: [{
-                        category: "Asia",
-                        value: 53.8,
-                        color: "#9de219"
-                    },{
-                        category: "Europe",
-                        value: 16.1,
-                        color: "#90cc38"
-                    },{
-                        category: "Latin America",
-                        value: 11.3,
-                        color: "#068c35"
-                    },{
-                        category: "Africa",
-                        value: 9.6,
-                        color: "#006634"
-                    },{
-                        category: "Middle East",
-                        value: 5.2,
-                        color: "#004d38"
-                    },{
-                        category: "North America",
-                        value: 3.6,
-                        color: "#033939"
-                    }]
-                }],
-                tooltip: {
-                    visible: true,
-                    format: "{0}%"
-                }
-            });
-			this.kendoWidget = widget.data('kendoChart');
-		}
+		this.renderFunction = this.renderPieChart;
 	};
+
+    this.renderPieChart = function () {
+        var widget = $('<div>');
+        this.$wrapper.append(widget);
+
+        widget = widget.kendoChart({
+            title: {
+                text: "Share of Internet Population Growth, 2007 - 2012"
+            },
+            legend: {
+                visible: false
+            },
+            seriesDefaults: {
+                labels: {
+                    visible: true,
+                    template: "#= category #: #= value#%"
+                }
+            },
+            series: [{
+                type: "pie",
+                data: [{
+                    category: "Asia",
+                    value: 33.8,
+                },{
+                    category: "Europe",
+                    value: 26.1,
+                },{
+                    category: "Latin America",
+                    value: 21.3,
+                },{
+                    category: "Africa",
+                    value: 9.6,
+                },{
+                    category: "Middle East",
+                    value: 5.2,
+                },{
+                    category: "North America",
+                    value: 3.6,
+                }]
+            }]
+        });
+        this.kendoWidget = widget.data('kendoChart');
+    }
 
 	this.initGrid = function () {
 		this.data = this.dataSource.getGridData()
-        
-        this.renderFunction = function () {
-        	var widget = $('<div>');
-            widget.css('padding', '20px');
-        	this.$wrapper.append(widget);
-        	widget = widget.kendoGrid({
-            	dataSource: {
-            		data: this.data,
-                    pageSize: 50,
-            		schema: {
-            			model: {
-            				fields: {
-            					Type: { type: "string" },
-            					Portfolio: { type: "string" },
-            					Category: { type: "string" },
-            					ActualValue: { type: "number" },
-            					Shares: { type: "number" }
-            				}
-            			}
-            		}
-            	},
-                height: 500,
-                scrollable: {
-                    virtual: true
-                },
-                columns: [{
-                    field: "Type",
-                }, {
-                    field: "Portfolio",
-                }, {
-                    field: "Category",
-                    title: "Company Name"
-                }, {
-                    field: "ActualValue",
-                    title: "Actual Value"
-                }, {
-                	field: "Shares"
-                }]
-            });
-			this.kendoWidget = widget.data('kendoGrid');
-		}
+        this.renderFunction = this.renderGrid;
 	};
+
+    this.renderGrid = function () {
+        var widget = $('<div>');
+        this.$wrapper.append(widget);
+        widget = widget.kendoGrid({
+            dataSource: {
+                data: this.data,
+                pageSize: 50,
+            },
+            height: 600,
+            scrollable: {
+                virtual: true
+            },
+            columns: [{
+                field: "Type",
+            }, {
+                field: "Portfolio",
+            }, {
+                field: "Category",
+                title: "Company Name"
+            }, {
+                field: "ActualValue",
+                title: "Actual Value"
+            }, {
+                field: "Shares"
+            }]
+        });
+        this.kendoWidget = widget.data('kendoGrid');
+    };
 
 	this.render = function () {
 		this.renderFunction();
@@ -325,11 +298,9 @@ var Widget = function () {
 	};
 
 };
+
 Utils = {
     replaceQueryParam: function (key, value) {
-        // var oldSearch = window.location.search;
-        // var currentQuery = oldSearch ? oldSearch + '&' : '?';
-        // currentQuery += key + '=' + value;
         var params = this.getQueryParams();
         params[key] = value;
         var newQuery = '';
@@ -368,7 +339,5 @@ Utils = {
             
 
 $(function(){
-  var slider = new WidgetSlider();
-  var widgetId = Utils.getQueryParams().widgetId;
-  slider.init('.swiper-container', widgetId);
+  new WidgetSlider().init();
 });
