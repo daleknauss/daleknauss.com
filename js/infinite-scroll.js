@@ -215,7 +215,7 @@ var TableScroller = function (cols, rows) {
             DOM.table.appendChild(tbody); //update dom
             if (pageNotInBuffer) self.visibleBuffer.push(page);
         } else {
-            DOM.table.insertBefore(tbody, DOM.table.childNodes[0]); //update dom
+            DOM.table.insertBefore(tbody, DOM.table.childNodes[1]); //update dom
             if (pageNotInBuffer) self.visibleBuffer.unshift(page);
         }
             if (self.myScroll) self.myScroll.refresh();
