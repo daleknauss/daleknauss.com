@@ -33,7 +33,7 @@ var TableScroller = function (cols, rows) {
 
         this.bind(1);
 
-        DOM.table.style.height = (this.rows.length * rowHeight) + 'px';
+        // DOM.table.style.height = (this.rows.length * rowHeight) + 'px';
 
         window.addEventListener('load', self.loadScroll, false);
     };
