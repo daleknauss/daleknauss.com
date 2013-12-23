@@ -40,9 +40,7 @@ var TableScroller = function (cols, rows) {
 
     this.loadScroll = function () { 
         // if (self.isOnTouchDevice()) {
-            self.myScroll = new IScroll('#tableBody', { 
-                customMaxScrollX: self.rows.length * self.getRowHeight()
-            });
+            self.myScroll = new IScroll('#tableBody');
             self.myScroll.on('scrollEnd', function () { 
                 self.scroll();
             });
