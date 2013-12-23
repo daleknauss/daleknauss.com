@@ -237,11 +237,13 @@
         }
         
         .TableViewer tbody td:nth-child(4), 
-        .TableViewer thead th:nth-child(4) {
+        .TableViewer thead th:nth-child(4),
+        .bodyRow div:nth-of-type(4) {
             width:                  300px;
         }
         .TableViewer tbody td:first-child , 
-        .TableViewer thead th:first-child {
+        .TableViewer thead th:first-child
+        .bodyRow div:first-child {
             width:                  auto;
         }
         
@@ -249,8 +251,10 @@
             height: 42px;
             width: 100%;
         }
+
         .bodyRow div {
             display: inline-block;
+            padding: 0px 10px;
         }
         #fakeTop {
             height: 0px;
