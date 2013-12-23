@@ -237,25 +237,35 @@
         }
         
         .TableViewer tbody td:nth-child(4), 
-        .TableViewer thead th:nth-child(4),
-        .bodyRow div:nth-of-type(4) {
+        .TableViewer thead th:nth-child(4) {
             width:                  300px;
         }
+
         .TableViewer tbody td:first-child , 
-        .TableViewer thead th:first-child
-        .bodyRow div:first-child {
+        .TableViewer thead th:first-child {
             width:                  auto;
         }
         
         .bodyRow {
-            height: 42px;
+            border-bottom: 1px solid black;
+            height: 40px;
             width: 100%;
         }
 
         .bodyRow div {
             display: inline-block;
-            padding: 0px 10px;
+            padding: 10px;
+            width: 150px;
         }
+
+        .bodyRow div:first-of-type {
+            width: auto;
+        }
+
+        .bodyRow div:nth-of-type(4) {
+            width: 300px;
+        }
+
         #fakeTop {
             height: 0px;
         }

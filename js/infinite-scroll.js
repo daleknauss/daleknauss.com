@@ -108,8 +108,8 @@ var TableScroller = function (cols, rows) {
             if (bufferFull) {
                 this.removePage(pageIndexToRemove);
 
-                DOM.fakeTop.style.height = parseInt(DOM.fakeTop.style.height) + this.getPageHeight() + 'px';
-
+                this.changeFakeTop(1);
+                
                 //adjust top position since we lost the height of height of the removed els                
                 // this.changeTableTop(Math.abs(DOM.table.offsetTop) + this.getPageHeight());
             }
@@ -135,7 +135,7 @@ var TableScroller = function (cols, rows) {
 
                 self.bind(newPage, false);
 
-                DOM.fakeTop.style.height = parseInt(DOM.fakeTop.style.height) - this.getPageHeight() + 'px';
+                this.changeFakeTop(-1);
 
                 // this.changeTableTop(Math.abs(DOM.table.offsetTop) - this.getPageHeight());
             }
@@ -235,6 +235,18 @@ var TableScroller = function (cols, rows) {
         this.bind(page);
         this.changeTableTop((page - 1) * this.getPageHeight());
     };
+
+    this.changeFakeTop = function (direction) {
+        if (!direction) direction = 1;
+
+        if (Math.abs(direction) !== 1) { /* direction can be -1 or 1 */
+            console.error("changeFakeTop requires a 1 or -1");
+            return;
+        }
+
+        var oldHeight =  parseInt(DOM.fakeTop.style.height);
+        DOM.fakeTop.style.height = oldHeight + (this.getPageHeight() * direction) + 'px';
+    }
 
     this.inRange = function () {
         return (self.currentPage > 1 && self.currentPage <= self.pageBuffer.length);
