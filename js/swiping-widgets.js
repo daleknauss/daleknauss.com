@@ -34,10 +34,10 @@ var WidgetSlider = function () {
 	};
 
     this.addArrowEvents = function () {
-        $('.swipe-left-arrow').on('click', function () {
+        $('.nav-arrow-left').on('click', function () {
             self.swiper.swipePrev()
         });
-        $('.swipe-right-arrow').on('click', function () {
+        $('.nav-arrow-right').on('click', function () {
             self.swiper.swipeNext()
         });
 
