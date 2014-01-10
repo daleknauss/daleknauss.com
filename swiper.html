@@ -9,12 +9,78 @@
 	<script src="js/jquery-1.9.1.min.js"></script>
 	<script src="js/kendo.all.min.js"></script>
   	<script src="js/swiper.min.js"></script>
-  	<script src="js/table-creator.js"></script>
-  	<script src="js/swiping-widgets.js"></script>
 </head>
 <body>
 <div class="nav-arrow nav-arrow-left"></div>
-<div class="swiper-container"></div>
+<div class="swiper-container">
+	<div class="swiper-wrapper">
+		<!--First Slide-->
+		<div class="swiper-slide"> 
+		<!-- Any HTML content of the first slide goes here -->
+			<iframe frameborder="1" height="800" width="800" src="slide_1.html"></iframe>
+		</div>
+
+		<!--Second Slide-->
+		<div class="swiper-slide">
+			<iframe frameborder="1" height="800" width="800" src="slide_2.html"></iframe>
+		</div>
+
+    </div>
+</div>
 <div class="nav-arrow nav-arrow-right"></div>
+<script>
+	var $container = $('.swiper-container')
+	this.swiper = $container.swiper({
+		mode:'horizontal',
+		keyboardControl: true,
+		grabCursor: true,
+        initialSlide: 1,
+        speed: 400,
+        calculateHeight: true,
+        touchRatio: 0.8,
+        moveStartThreshold: 100,
+		onSlideChangeStart: this.moveSlide
+	});
+
+	window.addEventListener("message", function (e) {
+		if (e.origin !== 'http://dale.local') return;
+
+		switch (e.data) {
+			case 'onTouchStart':
+			case 'onTouchMove':
+			case 'onTouchEnd':
+				$container.trigger(e.data);
+				console.log(e.data);
+				break;
+		}
+	}, false);
+
+    // var desktopEvents = ['mousedown','mousemove', 'mouseup'];
+    // if (_this.browser.ie10) desktopEvents = ['MSPointerDown', 'MSPointerMove', 'MSPointerUp'];
+    // if (_this.browser.ie11) desktopEvents = ['pointerdown', 'pointermove', 'pointerup'];
+
+    // _this.touchEvents = {
+    //     touchStart : _this.support.touch || !params.simulateTouch  ? 'touchstart' : desktopEvents[0],
+    //     touchMove : _this.support.touch || !params.simulateTouch ? 'touchmove' : desktopEvents[1],
+    //     touchEnd : _this.support.touch || !params.simulateTouch ? 'touchend' : desktopEvents[2]
+	       //  if (! (_this.browser.ie10 || _this.browser.ie11) ) {
+        //     if (_this.support.touch) {
+        //         bind(eventTarget, 'touchstart', onTouchStart);
+        //         bind(eventTarget, 'touchmove', onTouchMove);
+        //         bind(eventTarget, 'touchend', onTouchEnd);
+        //     }
+        //     if (params.simulateTouch) {
+        //         bind(eventTarget, 'mousedown', onTouchStart);
+        //         bind(document, 'mousemove', onTouchMove);
+        //         bind(document, 'mouseup', onTouchEnd);
+        //     }
+        // }
+        // else {
+        //     bind(eventTarget, _this.touchEvents.touchStart, onTouchStart);
+        //     bind(document, _this.touchEvents.touchMove, onTouchMove);
+        //     bind(document, _this.touchEvents.touchEnd, onTouchEnd);
+        // }
+
+</script>
 </body>
 </html>
