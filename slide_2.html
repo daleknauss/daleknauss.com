@@ -7,6 +7,9 @@
 		<div class="swiper-slide"> 
 		<!-- Any HTML content of the first slide goes here -->
 			<div style='height: 800px; width: 800px; background: red;'>
+				<button>Click Me!</button>
+			</div>
+
 		</div>
     </div>
 </div>
@@ -16,6 +19,9 @@
     };
 		// $('body').on('click')
 	$(function () {
+		$('button').on('click', function () {
+			alert("I've been clicked!!!")
+		})
 		// this.swiper = $('.swiper-container').swiper({
 		// 	mode:'horizontal',
 		// 	keyboardControl: true,
