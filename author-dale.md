@@ -6,11 +6,6 @@ feature_image: feature-sea
 author_avatar: dale-m
 author_name: Dale Knauss
 title: Dale Knauss
-fav_posts:
-  post_1 : ['In Defense of Ideas','in-defense-of-ideas/', '']
-  post_2 : ['CSS with Superpowers', 'css-with-superpowers/', 'Sass is completely compatible with all versions of CSS. We take this compatibility seriously, so that you can seamlessly use any available CSS libraries.']
-  post_3 : ['Its Not Always That Simple
-', 'its-not-always-that-simple/', 'If you always do what you’ve always done, you’ll always get what you’ve always had.']
 
 ---
 
