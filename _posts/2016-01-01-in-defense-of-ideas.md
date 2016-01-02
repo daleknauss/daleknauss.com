@@ -7,6 +7,7 @@ read_time : 10
 feature_image: feature-wolf
 show_related_posts: false
 square_related: recommend-wolf
+is_featured: true
 ---
 
 I have a score to settle.

@@ -27,3 +27,5 @@ It goes without saying, though I'll say it anyways because keywords are a thing,
 I'm also a marketing professional with eight years of experience helping startups and small businesses grow with repeatable, proven strategies. I'm experienced with Paid Search Advertising (PPC), Conversion Rate Optimization (CRO), Copywriting, Email Marketing, Search Engine Optimization (SEO), and leveraging Analytics to build powerful Sales Funnels.
 
 I also love traveling the world, meditation, tennis, ping pong, running, spending time with my beautiful wife, and reading everything I can get my hands on.
+
+You can reach me at: <a href="mailto:daleknauss@gmail.com?Subject=Hello" target="_blank">daleknauss@gmail.com</a>
