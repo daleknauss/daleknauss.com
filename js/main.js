@@ -1,106 +1,71 @@
-$(document).ready(function ($) {
-  
-    // Sidebar Toggle
-    
-    $('.btn-navbar').click( function() {
-	    $('html').toggleClass('expanded');
-    });
-    
-    
-    // Slide Toggles
-    
-    $('#section3 .button').on('click', function () {
-	    
-	    var section = $(this).parent();
-		
-		section.toggle();
-	    section.siblings(".slide").slideToggle('2000', "easeInQuart");
-	});
-	
-	$('#section3 .read-more').on('click', function () {
-	    
-	    var section = $(this).parent();
-		
-		section.toggle();
-	    section.siblings(".slide").slideToggle('2000', "easeInQuart");
-	});
-  
-	// Waypoints Scrolling
-	
-	var links = $('.navigation').find('li');
-  var navLinks = $('.nav-link');
-	var buttons = $('.nav-btn');
-  var section = $('section');
-  var mywindow = $(window);
-  var htmlbody = $('html,body');
 
-    
-    section.waypoint(function (direction) {
+var settings,
+    app = {
+        init: function() {
+            // initalize
+            this.initalizers();
+            this.bindUiActions();
+        },
+        bindUiActions: function (){
+            // Should include all JS user interactions
+            var self = this;
 
-        var datasection = $(this).attr('data-section');
+            $('.select-posts, .select-categories').on('click', function () {
+                self.homePostsCatSwitch();
+            });
 
-        if (direction === 'down') {
-            $('.navigation li[data-section="' + datasection + '"]').addClass('active').siblings().removeClass('active');
+            $('.social-icon').on('click', function () {
+                self.socialIconClick( $(this) );
+            });
+
+        },
+        initalizers: function (){
+            // Initalize any plugins for functions when page loads
+
+            // Fast Click for Mobile - removes 300ms delay - https://github.com/ftlabs/fastclick
+            FastClick.attach(document.body);
+        },
+        homePostsCatSwitch: function() {
+            // Toggles between showing the categories and posts on the homepage
+            $('.home-page-posts').toggleClass("hide");
+            $('.home-page-categories').toggleClass("hide");
+            $('.select-posts').toggleClass("active");
+            $('.select-categories').toggleClass("active");
+            $('.home-footer').toggleClass("hide");
+        },
+        socialIconClick: function(el) {
+            // Post page social Icons
+            // When Clicked pop up a share dialog
+
+            var platform = el.data('platform');
+
+            if (platform === 'mail'){
+                // Let mail use default browser behaviour
+                return true;
+            } else {
+                this.popItUp(platform);
+            }
+            return false;
+        },
+        popItUp : function (platform) {
+            // Create the popup with the correct location URL for sharing
+            var popUrl,
+                newWindow,
+                message = el.data('message'),
+                url = el.data('url');
+
+            if( platform == 'twitter'){
+                popUrl = 'http://twitter.com/home?status=' + encodeURI(message) + '+' + url;
+
+            } else if(platform == 'facebook'){
+                popUrl = 'http://www.facebook.com/share.php?u' + url + '&amp;title=' + encodeURI(message);
+            }
+            newWindow = window.open(popUrl,'name','height=500,width=600');
+            if (window.focus) { newWindow.focus(); }
+            return false;
         }
-        else {
-        	var newsection = parseInt(datasection) - 1;
-            $('.navigation li[data-section="' + newsection + '"]').addClass('active').siblings().removeClass('active');
-        }
+    };
 
-    });
-    
-    mywindow.scroll(function () {
-        if (mywindow.scrollTop() == 0) {
-            $('.navigation li[data-section="1"]').addClass('active');
-            $('.navigation li[data-section="2"]').removeClass('active');
-        }
-    });
-    
-    function goToByScroll(datasection) {
-        
-        if (datasection == 1) {
-	        htmlbody.animate({
-	            scrollTop: $('.section[data-section="' + datasection + '"]').offset().top
-	        }, 500, 'easeOutQuart');
-        }
-        else {
-	        htmlbody.animate({
-	            scrollTop: $('.section[data-section="' + datasection + '"]').offset().top + 70
-	        }, 500, 'easeOutQuart');
-        }
-        
-    }
-
-    links.click(function (e) {
-        e.preventDefault();
-        var datasection = $(this).attr('data-section');
-        goToByScroll(datasection);
-    });
-
-    navLinks.click(function (e) {
-      e.preventDefault();
-      var datasection = $(this).attr('data-section');
-      goToByScroll(datasection);
-    });
-    
-    buttons.click(function (e) {
-        e.preventDefault();
-        var datasection = $(this).attr('data-section');
-        goToByScroll(datasection);
-    });
-    
-    // Redirect external links
-	
-	$("a[rel='external']").click(function(){
-		this.target = "_blank";
-	}); 	
-	
-	
-	// Modernizr SVG backup
-	
-	if(!Modernizr.svg) {
-	    $('img[src*="svg"]').attr('src', function() {
-	        return $(this).attr('src').replace('.svg', '.png');
-	    });
-	}    
+$(document).ready(function(){
+    app.init();
 });

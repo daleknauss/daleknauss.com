@@ -1,0 +1,7 @@
+<p class="meta">
+    <a href="{{ site.default_author_url | prepend: site.baseurl }}">
+        {{ site.default_author_name }}</a> in
+        <a href='{{ "/category/" | append: include.post.categories.first | prepend: site.baseurl }}'>
+        {{ include.post.categories.first | capitalize }}
+        </a> <i class="link-spacer"></i> <i class="fa fa-bookmark"></i> {{ include.post.read_time }} minutes
+</p>
