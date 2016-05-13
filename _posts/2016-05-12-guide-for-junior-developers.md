@@ -15,11 +15,17 @@ I recently wrote a post on Medium: [The Seven Habits of a Highly Effective Junio
 Here are the bullet points:
 
 1. Learn Voraciously
+
 2. Ask Great Questions
+
 3. Clean Code Matters
+
 4. Fail Often — Fail Well
+
 5. Tackle Bite-size Problems
+
 6. Build Things
+
 7. Soft Skills Matter
 
 Give [the whole thing][1] a read if you're into that sort of thing!
