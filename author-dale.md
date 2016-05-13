@@ -6,6 +6,7 @@ feature_image: feature-sea
 author_avatar: dale-m
 author_name: Dale Knauss
 title: Dale Knauss
+desc: "I'm a lumberjack and I'm okay!"
 
 ---
 

@@ -15,13 +15,11 @@ var settings,
             });
 
             $('.social-icon').on('click', function () {
-                self.socialIconClick( $(this) );
+                return self.socialIconClick( $(this) );
             });
 
         },
         initalizers: function (){
-            // Initalize any plugins for functions when page loads
-
             // Fast Click for Mobile - removes 300ms delay - https://github.com/ftlabs/fastclick
             FastClick.attach(document.body);
         },
@@ -36,30 +34,32 @@ var settings,
         socialIconClick: function(el) {
             // Post page social Icons
             // When Clicked pop up a share dialog
-
-            var platform = el.data('platform');
+            var platform = el.data('platform'),
+                message,
+                url;
 
             if (platform === 'mail'){
                 // Let mail use default browser behaviour
                 return true;
             } else {
-                this.popItUp(platform);
+                message = el.data('message');
+                url = el.data('url');
+                this.popItUp(platform, message, url);
+                return false;
             }
-            return false;
         },
-        popItUp : function (platform) {
+        popItUp : function (platform, message, url) {
             // Create the popup with the correct location URL for sharing
             var popUrl,
-                newWindow,
-                message = el.data('message'),
-                url = el.data('url');
+                newWindow;
 
-            if( platform == 'twitter'){
+            if (platform == 'twitter') {
                 popUrl = 'http://twitter.com/home?status=' + encodeURI(message) + '+' + url;
 
-            } else if(platform == 'facebook'){
+            } else if (platform == 'facebook') {
                 popUrl = 'http://www.facebook.com/share.php?u' + url + '&amp;title=' + encodeURI(message);
             }
+
             newWindow = window.open(popUrl,'name','height=500,width=600');
             if (window.focus) { newWindow.focus(); }
             return false;

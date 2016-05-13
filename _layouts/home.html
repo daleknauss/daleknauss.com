@@ -30,16 +30,4 @@ layout: with-sidebar
 
 </div><!-- Home page posts -->
 
-<div class="home-page-categories hide animated fadeIn ">
-    <div class="category row">
-        <section>
-            {% for category in site.categories %}
-
-                <div class="category-preview col-xs-6 col-sm-4 ">
-                    <h2>{{ category | first | capitalize }}</h2>
-                    <a href='{{ "category/" | append: category.first | prepend: site.baseurl }}'><img src='{{ "img/" | append: category.first | prepend: site.baseurl }}-thumbnail.jpg' alt="category-image"></a>
-                </div>
-            {% endfor %}
-        </section>
-    </div>
-</div>
+{% include categories.html %}

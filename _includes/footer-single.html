@@ -1,13 +1,14 @@
 <div class="container">
     <div class="row">
         <div class="col-xs-12 col-sm-2">
-            <img src="{{ site.baseurl }}/img/{{ site.default_avatar }}.jpg" class="user-icon " alt="user-image">
+            <a href="{{ site.default_author_url }}"><img src="{{ site.baseurl }}/img/{{ site.default_avatar }}.jpg" class="user-icon " alt="user-image"></a>
         </div>
         <div class="col-xs-12 col-sm-6">
             <div class="category-list">
                 <p>Published <span>{{ page.date | date: "%b %-d, %Y" }}</span></p>
                 <p><a href="{{ site.default_author_url }}">{{ site.default_author_name }}</a> in <a href='{{ "/category/" | append: page.categories.first | prepend: site.baseurl }}'>{{ page.categories.first | capitalize }}</a></p>
 
+                {% if page.catagories.size > 1 %}
                 <div class="other-catergories">
                     <h3>Also found in</h3>
 
@@ -20,6 +21,7 @@
                         {% endfor %}
                     </ul>
                 </div>
+                {% endif %}
 
             </div>
         </div><!-- end col -->

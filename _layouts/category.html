@@ -4,9 +4,10 @@ layout: with-sidebar
 
 <div class="sub-nav">
     <a href="#" class="select-posts active">Posts</a>
+    <a href="#" class="select-categories">Categories</a>
 </div>
 
-<div class="category-page-posts animated fadeIn ">
+<div class="home-page-posts animated fadeIn ">
 
     {% for post in site.categories.[page.category] %}
     <article class="post">
@@ -20,11 +21,15 @@ layout: with-sidebar
 
         </div>
 
+        {% if post.show_avatar == true %}
         <div class=" col-xs-2  no-gutter">
             <img src='{{ "/img/" | append: site.default_avatar | prepend: site.baseurl }}.jpg' class="user-icon user-1" alt="user-image">
         </div>
+        {% endif %}
 
     </article>
 
     {% endfor %}
 </div>
+
+{% include categories.html %}
