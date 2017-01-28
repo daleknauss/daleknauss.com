@@ -5,7 +5,7 @@ date: 2016-05-12 22:00:00
 categories: coding learning
 read_time : 1
 feature_image: feature-book
-show_related_posts: false
+show_related_posts: true
 square_related: recommend-san-fran
 is_featured: true
 ---

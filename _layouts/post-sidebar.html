@@ -22,7 +22,7 @@ layout: default
             <div class="meta">
 
                 <div class="sidebar-info">
-                    <a href="{{ site.default_author_url | prepend: site.baseurl }}">{{ site.default_author_name | capitalize }}</a> in <a href='{{ "category/" | append: page.categories.first | prepend: site.baseurl }}'>{{ page.categories.first | capitalize }}</a>
+                    <a href="{{ site.default_author_url | prepend: site.baseurl }}">{{ site.default_author_name | capitalize }}</a> in <a href='{{ "category/" | append: page.categories.first | prepend: site.baseurl }}'>{{ page.categories.first | format_category }}</a>
                 </div>
 
                 <div class="sidebar-readtime">

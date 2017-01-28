@@ -1,7 +1,7 @@
 # Site settings
 title: Blog of Dale Knauss
 email: daleknauss@gmail.com
-description: > # Thoughts on startups, mindfulness,
+description: > # Thoughts on virtual reality, augmented reality,
     code, people, and strange things that go bump in the night.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "daleknauss.com" # the base hostname & protocol for your site
@@ -11,9 +11,9 @@ nav_list:
   Home : ['Home', '/', 'fa-home']
   About : ['About', '/about', 'fa-anchor']
   Contact : ['Contact', '/contact', 'fa-plane']
-single_footer: '<p>The writer community loves your content. Writer &copy; 2015 <a href="/">latest posts</a></p>'
+single_footer: '<p>Dale Knauss &copy; 2017 <a href="/">latest posts</a></p>'
 footer_links:
-    Writer: ['Dale Knauss &copy; 2015', '/about']
+    Writer: ['Dale Knauss &copy; 2017', '/about']
 default_author_name: 'Dale Knauss'
 default_avatar: dale
 default_author_url: '/about'

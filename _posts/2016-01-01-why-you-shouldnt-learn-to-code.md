@@ -2,10 +2,10 @@
 layout: post
 title:  "Why you shouldn't learn to code"
 date: 2016-01-01 22:00:00
-categories: coding learning startups
+categories: coding learning
 read_time : 6
 feature_image: feature-laptop
-show_related_posts: false
+show_related_posts: true
 square_related: recommend-laptop
 is_featured: true
 ---

@@ -2,10 +2,10 @@
 layout: post
 title:  "In Defense of Ideas"
 date: 2016-01-01 20:15:00
-categories: startups
+categories: learning
 read_time : 10
 feature_image: feature-wolf
-show_related_posts: false
+show_related_posts: true
 square_related: recommend-wolf
 is_featured: true
 ---
