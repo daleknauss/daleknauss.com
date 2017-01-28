@@ -6,7 +6,7 @@
         <div class="col-xs-12 col-sm-6">
             <div class="category-list">
                 <p>Published <span>{{ page.date | date: "%b %-d, %Y" }}</span></p>
-                <p><a href="{{ site.default_author_url }}">{{ site.default_author_name }}</a> in <a href='{{ "/category/" | append: page.categories.first | prepend: site.baseurl }}'>{{ page.categories.first | format_category }}</a></p>
+                <p><a href="{{ site.default_author_url }}">{{ site.default_author_name }}</a> in <a href='{{ "/category/" | append: page.categories.first | prepend: site.baseurl }}'>{{ page.categories.first | split: '-' | join: '' }}</a></p>
 
                 {% if page.catagories.size > 1 %}
                 <div class="other-catergories">
@@ -15,7 +15,7 @@
                     <ul>
                         {% for category in page.categories %}
                         <li>
-                            <a href='{{ "/category/" | append: category | prepend: site.baseurl }}'>{{ category | format_category }}</a>
+                            <a href='{{ "/category/" | append: category | prepend: site.baseurl }}'>{{ category | split: '-' | join: ' ' }}</a>
                             {% unless forloop.last %},{% endunless %}
                         </li>
                         {% endfor %}
